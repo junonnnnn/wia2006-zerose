@@ -187,10 +187,36 @@
   .foot-tab.left { left: 50px; }
   .foot-tab.right { right: 58px; }
 
+  /* ---------- transitions ---------- */
+  /* the new slide wipes in behind a neon + black edge; the old one slides off and dims */
+  .slide.active { z-index: 2; }
+  .slide.leaving { display: flex; z-index: 1; }
+  .slide.enter-next, .slide.enter-prev { animation: 560ms cubic-bezier(.85, 0, .15, 1) backwards; }
+  .slide.exit-next, .slide.exit-prev { animation: 560ms cubic-bezier(.85, 0, .15, 1) forwards; }
+  .slide.enter-next { animation-name: wipe-in-next; box-shadow: -14px 0 0 var(--neon), -28px 0 0 var(--ink); }
+  .slide.enter-prev { animation-name: wipe-in-prev; box-shadow: 14px 0 0 var(--neon), 28px 0 0 var(--ink); }
+  .slide.exit-next { animation-name: wipe-out-next; }
+  .slide.exit-prev { animation-name: wipe-out-prev; }
+  @keyframes wipe-in-next { from { translate: 100vw 0; } }
+  @keyframes wipe-in-prev { from { translate: -100vw 0; } }
+  @keyframes wipe-out-next { to { translate: -30vw 0; opacity: 0.35; } }
+  @keyframes wipe-out-prev { to { translate: 30vw 0; opacity: 0.35; } }
+
+  /* content: text rises; boxes land pressed flat, then pop up onto their hard shadow */
+  .animate [data-fx] { animation: 520ms cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(240ms + var(--i, 0) * 60ms); }
+  .animate [data-fx="rise"] { animation-name: fx-rise; }
+  .animate [data-fx="press"] { animation-name: fx-press; animation-duration: 640ms; }
+  .animate [data-fx="draw"] { animation-name: fx-draw; transform-origin: left; }
+  @keyframes fx-rise { from { opacity: 0; translate: 0 36px; } }
+  @keyframes fx-press { 0% { opacity: 0; translate: 0 48px; box-shadow: none; } 55% { opacity: 1; translate: 8px 8px; box-shadow: none; } }
+  @keyframes fx-draw { from { scale: 0 1; } }
+  @media (prefers-reduced-motion: reduce) { .slide, .slide * { animation: none !important; } }
+
   @page { size: 1920px 1080px; margin: 0; }
   @media print {
     html, body { height: auto; overflow: visible; background: var(--paper); }
     .slide { display: flex; position: relative; left: 0; top: 0; transform: none; break-after: page; }
+    .slide, .slide * { animation: none !important; }
   }
 </style>
 </head>
@@ -416,11 +442,31 @@
 <script>
   // ← / → (or click left/right half) to move, F for fullscreen, #N in the URL opens slide N
   const slides = [...document.querySelectorAll('.slide')];
-  let cur = 0;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur = -1, timer;
+  // tag the pieces that animate in; --i staggers them in reading order
+  [['.kicker, .h, .lead, .op, .hero .badge, .hero .title, .hero .tagline, .hero .tab', 'rise'],
+   ['.row > *, .grid2 > *, .modules > *, .term, .verdict, .hero .member', 'press'],
+   ['.hero .rule', 'draw']].forEach(([sel, fx]) => document.querySelectorAll(sel).forEach(el => { el.dataset.fx = fx; }));
+  slides.forEach(s => s.querySelectorAll('[data-fx]').forEach((el, k) => el.style.setProperty('--i', Math.min(k, 14))));
   const fit = () => document.documentElement.style.setProperty('--s', Math.min(innerWidth / 1920, innerHeight / 1080));
   const show = n => {
-    cur = Math.max(0, Math.min(slides.length - 1, n));
-    slides.forEach((s, k) => s.classList.toggle('active', k === cur));
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    if (n === cur) return;
+    const prev = slides[cur], next = slides[n], dir = n > cur ? 'next' : 'prev';
+    clearTimeout(timer);
+    slides.forEach(s => s.classList.remove('active', 'leaving', 'animate', 'enter-next', 'enter-prev', 'exit-next', 'exit-prev'));
+    void next.offsetWidth; // restart animations on a slide we have shown before
+    next.classList.add('active');
+    if (!reduce) {
+      next.classList.add('animate');
+      if (prev) {
+        prev.classList.add('leaving', 'exit-' + dir);
+        next.classList.add('enter-' + dir);
+        timer = setTimeout(() => { prev.classList.remove('leaving', 'exit-' + dir); next.classList.remove('enter-' + dir); }, 600);
+      }
+    }
+    cur = n;
     try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) {}
   };
   const fromHash = () => { const n = parseInt(location.hash.slice(1), 10); show(Number.isFinite(n) ? n - 1 : 0); };
