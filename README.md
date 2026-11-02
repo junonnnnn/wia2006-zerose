@@ -16,10 +16,11 @@ Team Zero SE, WIA2006 System Analysis and Design.
 
 | Path | What it is |
 |---|---|
-| `index.html` | The latest deck: Weekly Progress 2, system development methodology (9 slides) |
+| `index.html` | The latest deck: Weekly Progress 3, three-step information systems planning (7 slides) |
+| `week2.html` | Week 2 deck: system development methodology (9 slides) |
 | `week1.html` | Week 1 deck: justification, objectives and scope (7 slides) |
 | `assets/` | Original team photos |
-| `assets/portraits/` | Cropped headshots used on the title slide |
+| `assets/portraits/` | Cropped headshots used on the title and roles slides |
 
 ## Team
 
