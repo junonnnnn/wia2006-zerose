@@ -16,7 +16,8 @@ Team Zero SE, WIA2006 System Analysis and Design.
 
 | Path | What it is |
 |---|---|
-| `index.html` | The latest deck: Weekly Progress 3, three-step information systems planning (7 slides) |
+| `index.html` | The latest deck: Weekly Progress 4, baseline project plan (11 slides) |
+| `week3.html` | Week 3 deck: three-step information systems planning (7 slides) |
 | `week2.html` | Week 2 deck: system development methodology (9 slides) |
 | `week1.html` | Week 1 deck: justification, objectives and scope (7 slides) |
 | `assets/` | Original team photos |

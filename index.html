@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FSKTMap · Progress 3</title>
+<title>FSKTMap · Progress 4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Montserrat:wght@700;800&display=swap">
@@ -125,26 +125,72 @@
   .tag.done { background: var(--green); }
   .tags { display: flex; gap: 12px; }
 
-  /* ---------- 02 · ISP overview ---------- */
-  .steps { display: grid; grid-template-columns: 1fr 72px 1fr 72px 1fr; }
-  .steps .card { gap: 12px; }
-  .steps .top { display: flex; align-items: center; justify-content: space-between; }
-  .steps h3 { font-size: 40px; }
-  .strip .term.pm { flex: none; padding: 12px 34px 12px 12px; font-size: 34px; }
-  .term .avatar { width: 64px; height: 64px; flex: none; margin-right: 22px; border: 3px solid var(--ink); object-fit: cover; }
+  .term.keep { text-transform: none; }
+  .card.alt { border-style: dashed; box-shadow: none; }
+  .card.dark { background: var(--ink); color: var(--paper); }
+  .card.dark p { color: #D1D5DB; }
+  .card.dark b { color: var(--paper); }
+  .card.dark .tag { background: var(--neon); color: var(--ink); }
+  .items.big li { font-size: 30px; font-weight: 600; }
+  .items.big li::before { margin-top: 12px; }
 
-  /* ---------- 03 · current situation ---------- */
-  .card.wip { border-style: dashed; }
-  .issues { display: flex; flex-direction: column; gap: 20px; margin-top: 6px; }
-  .issue { display: flex; align-items: center; gap: 28px; }
-  .issue .code { width: 150px; flex: none; margin: 0; font-size: 66px; }
-  .card .glabel { margin-top: 6px; font-family: var(--label); font-weight: 800; font-size: 20px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); }
-  .chips.inline { flex-direction: row; flex-wrap: wrap; }
-  .req { gap: 12px; }
-  .req .items li { font-size: 28px; font-weight: 700; color: var(--ink-2); }
-  .req .items li::before { margin-top: 10px; }
+  /* ---------- 04 · system description ---------- */
+  .sys { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: start; }
+  .sys .line { padding: 22px 28px; }
+  .line .k {
+    font-family: var(--label); font-weight: 800; font-size: 20px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--grey); white-space: nowrap;
+  }
+  .line .v { font-weight: 800; font-size: 30px; line-height: 1.2; letter-spacing: -0.015em; text-align: right; }
+  .parts { display: flex; flex-direction: column; gap: 24px; }
+  .part { flex-direction: row; align-items: center; gap: 26px; padding: 22px 26px; }
+  .part .icon { width: 72px; height: 72px; }
+  .part .icon svg { width: 40px; height: 40px; }
+  .part > div { display: flex; flex-direction: column; gap: 6px; }
+  .part h3 { font-size: 32px; }
+  .card.part p { font-size: 26px; }
 
-  /* ---------- 05 · schedule ---------- */
+  /* ---------- 05 · feasibility at a glance ---------- */
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px 36px; }
+  .grid3 .card { gap: 10px; padding: 28px 32px; }
+  .card .stat {
+    margin: 2px 0 4px; font-weight: 900; font-size: 72px; line-height: 0.95; letter-spacing: -0.04em; white-space: nowrap;
+    color: var(--green); text-shadow: 5px 5px 0 var(--ink);
+  }
+  .grid3 .card p:not(.stat) { font-size: 26px; }
+
+  /* ---------- 06 · technical risks ---------- */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 40px; }
+  .risk { flex-direction: row; align-items: flex-start; gap: 28px; padding: 30px 34px; }
+  .risk .num { flex: none; width: 118px; }
+  .risk > div { display: flex; flex-direction: column; gap: 10px; }
+  .risk h3 { font-size: 36px; }
+  .card.risk p { font-size: 27px; }
+
+  /* ---------- 07 · problem → solution ---------- */
+  .pairs { display: flex; flex-direction: column; gap: 24px; }
+  .pair { display: grid; grid-template-columns: 1fr 72px 1fr; }
+  .pair .card { gap: 8px; padding: 22px 30px; }
+  .pair .card p { font-size: 27px; }
+  .pair h3 { font-size: 34px; }
+  .strip .term .ico { width: 36px; height: 36px; flex: none; margin-right: 18px; }
+
+  /* ---------- 08 · legal & political ---------- */
+  .lp .card { gap: 18px; }
+  .lp .top { display: flex; align-items: center; gap: 22px; }
+  .lp h3 { font-size: 40px; }
+  .stake { display: flex; flex-direction: column; gap: 14px; }
+  .stake div {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 20px;
+    border: 3px solid var(--ink); font-weight: 800; font-size: 28px; letter-spacing: -0.015em;
+  }
+  .stake span { font-family: var(--label); font-weight: 800; font-size: 18px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); white-space: nowrap; }
+
+  /* ---------- spec lines ---------- */
+  .lines { display: flex; flex-direction: column; background: var(--paper); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
+  .line { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 32px; border-top: 4px solid var(--ink); }
+
+  /* ---------- 09 · schedule ---------- */
   .gantt { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px 24px; align-items: stretch; }
   .week {
     padding: 12px 0; text-align: center; background: var(--ink); color: var(--paper);
@@ -157,33 +203,13 @@
   .items li::before { content: ""; width: 14px; height: 14px; flex: none; margin-top: 9px; background: var(--green); border: 3px solid var(--ink); }
   .phase.wide .items { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 28px; }
 
-  /* ---------- 06 · roles ---------- */
+  /* ---------- 10 · team ---------- */
   .roles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px; }
   .role { padding: 0; gap: 0; overflow: hidden; }
   .role img { display: block; width: 100%; aspect-ratio: 106 / 109; object-fit: cover; border-bottom: 4px solid var(--ink); background: var(--ph-fill); }
   .role .info { display: flex; flex-direction: column; gap: 10px; padding: 22px 24px 26px; }
   .role h3 { font-size: 30px; }
   .card.role p { font-size: 26px; font-weight: 700; }
-
-  /* ---------- 07 · budget ---------- */
-  .budget { display: grid; grid-template-columns: 1.55fr 1fr; gap: 48px; align-items: stretch; }
-  .lines { display: flex; flex-direction: column; background: var(--paper); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
-  .line { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 32px; border-top: 4px solid var(--ink); }
-  .line.head {
-    flex: none; padding: 16px 32px; border-top: 0; background: var(--ink); color: var(--paper);
-    font-family: var(--label); font-weight: 800; font-size: 22px; letter-spacing: 0.12em; text-transform: uppercase;
-  }
-  .line .cat { font-weight: 900; font-size: 34px; letter-spacing: -0.02em; text-transform: uppercase; }
-  .line .cost { font-weight: 900; font-size: 44px; letter-spacing: -0.02em; white-space: nowrap; }
-  .line .cost.free {
-    padding: 10px 16px; background: var(--green); color: var(--paper); border: 3px solid var(--ink);
-    font-family: var(--label); font-weight: 800; font-size: 22px; letter-spacing: 0.12em; text-transform: uppercase;
-  }
-  .total { justify-content: space-between; }
-  .card .mega {
-    font-weight: 900; font-size: 170px; line-height: 0.85; letter-spacing: -0.05em; white-space: nowrap;
-    color: var(--green); text-shadow: 6px 6px 0 var(--ink);
-  }
 
   /* ---------- 01 · hero ---------- */
   .hero .badges { position: absolute; left: 60px; top: 137px; display: flex; gap: 32px; }
@@ -282,25 +308,33 @@
     <symbol id="i-box" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></g></symbol>
     <symbol id="i-route" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></g></symbol>
     <symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></g></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></g></symbol>
+    <symbol id="i-gamepad" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01"/><path d="M17.3 5H6.7a4 4 0 0 0-4 3.6C2.6 9.4 2 14.5 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.4-1.4A2 2 0 0 1 9.8 16h4.4a2 2 0 0 1 1.4.6L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.5-.6-6.6-.7-7.3a4 4 0 0 0-4-3.7z"/></g></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 6.8a1 1 0 0 0-4-4L3.8 16.2a2 2 0 0 0-.5.8L2 21.4a.5.5 0 0 0 .6.6l4.4-1.3a2 2 0 0 0 .8-.5z"/><path d="m15 5 4 4"/></g></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></g></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></g></symbol>
+    <symbol id="i-git" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></g></symbol>
   </defs>
 </svg>
 
 <!-- 01 · Hero -->
-<section class="slide hero" aria-label="FSKTMap progress 3 title slide">
+<section class="slide hero" aria-label="FSKTMap progress 4 title slide">
   <div class="badges">
     <div class="badge badge--team">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       Team Zero SE
     </div>
     <div class="badge badge--course">WIA2006 · System Analysis &amp; Design</div>
-    <div class="badge badge--week">Progress 3</div>
+    <div class="badge badge--week">Progress 4</div>
   </div>
 
   <h1 class="title">FSKT<span class="accent">MAP</span></h1>
 
   <div class="tagline">
-    <p class="line1">INFORMATION SYSTEMS PLANNING</p>
-    <p class="line2">THE THREE-STEP ISP PROCESS.</p>
+    <p class="line1">BASELINE PROJECT PLAN</p>
+    <p class="line2">OVERVIEW · SYSTEM · FEASIBILITY · MANAGEMENT.</p>
   </div>
 
   <div class="rule"></div>
@@ -332,104 +366,258 @@
   </div>
 </section>
 
-<!-- 02 · ISP overview -->
-<section class="slide" aria-label="The three-step ISP process">
-  <div class="kicker">ISP · Overview</div>
-  <h2 class="h">Three-Step <span class="accent">ISP</span></h2>
-  <div class="body" style="gap: 36px">
-    <p class="lead"><b>Information systems planning</b> assesses information needs and defines the <b>systems, databases &amp; technologies</b> that best meet them.</p>
-    <div class="steps">
-      <div class="card">
-        <div class="top"><span class="num">01</span><div class="icon"><svg aria-hidden="true"><use href="#i-pin"/></svg></div></div>
-        <h3>Current Situation</h3>
-        <p>Where FSKTM <b>navigation stands today</b>.</p>
-      </div>
-      <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
-      <div class="card">
-        <div class="top"><span class="num">02</span><div class="icon"><svg aria-hidden="true"><use href="#i-target"/></svg></div></div>
-        <h3>Future Situation</h3>
-        <p>What <b>FSKTMap</b> will deliver.</p>
-      </div>
-      <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
-      <div class="card neon">
-        <div class="top"><span class="num">03</span><div class="icon"><svg aria-hidden="true"><use href="#i-calendar"/></svg></div></div>
-        <h3>Project Plan</h3>
-        <p>The <b>schedule</b>, <b>roles</b> and <b>budget</b>.</p>
-      </div>
-    </div>
-    <div class="strip">
-      <div class="label">Project manager</div>
-      <div class="term pm"><img class="avatar" src="assets/portraits/member-5.jpg" alt="">Yong Jun Onn</div>
-    </div>
-  </div>
-  <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 3</div>
-  <div class="foot-tab right">02</div>
-</section>
-
-<!-- 03 · Step 1: current situation -->
-<section class="slide" aria-label="Step 1: current situation">
-  <div class="kicker">Step 1 · Current Situation</div>
-  <h2 class="h">Current <span class="accent">Situation</span></h2>
+<!-- 02 · Introduction: overview & recommendation -->
+<section class="slide" aria-label="Introduction: project overview and recommendation">
+  <div class="kicker">1.0 · Introduction</div>
+  <h2 class="h">Project <span class="accent">Overview</span></h2>
   <div class="body">
     <p class="lead"><b>Static floor plans</b> &amp; <b>physical signage</b> confuse <b>new students &amp; visitors</b>.</p>
     <div class="row">
       <div class="card">
-        <span class="tag status done"><svg aria-hidden="true"><use href="#i-check"/></svg>Completed</span>
-        <h3>Root-Cause Analysis</h3>
-        <div class="issues">
-          <div class="issue"><p class="code">MM5</p><p><b>Obscure</b> location</p></div>
-          <div class="issue"><p class="code">BK1</p><p><b>Unclear</b> room labelling</p></div>
-          <div class="issue"><p class="code">OKU</p><p><b>Missing</b> accessibility infrastructure</p></div>
-        </div>
+        <p class="code">MM5</p>
+        <h3>Obscure Location</h3>
+        <p>The room is <b>hard to find</b>.</p>
       </div>
-      <div class="card wip req">
-        <span class="tag status"><svg aria-hidden="true"><use href="#i-loop"/></svg>In progress</span>
-        <h3>Requirements</h3>
-        <p class="glabel">Target user profiles</p>
-        <div class="chips inline"><div class="chip">Students</div><div class="chip">Visitors</div><div class="chip">OKU users</div></div>
-        <p class="glabel">Functional requirements</p>
-        <ul class="items"><li>3D floor plan rendering</li><li>Point-to-point pathfinding</li></ul>
+      <div class="card">
+        <p class="code">BK1</p>
+        <h3>Unclear Labelling</h3>
+        <p>Room labels are <b>unclear</b>.</p>
       </div>
+      <div class="card neon">
+        <p class="code">OKU</p>
+        <h3>Missing Access</h3>
+        <p>No <b>accessibility infrastructure</b> for OKU users.</p>
+      </div>
+    </div>
+    <div class="verdict">
+      <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+      <p><b>Recommendation:</b> finish a <b>full analysis &amp; design</b> before publishing, so <b>room data matches the official drawings</b>.</p>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 3</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">02</div>
+</section>
+
+<!-- 03 · Systems description: alternatives -->
+<section class="slide" aria-label="Systems description: alternatives">
+  <div class="kicker">2.0 · Systems Description</div>
+  <h2 class="h">The <span class="accent">Alternatives</span></h2>
+  <div class="body">
+    <p class="lead">Other approaches were <b>possible</b>; FSKTMap is built as a <b>custom 3D web app</b>.</p>
+    <div class="row">
+      <div class="card alt">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-building"/></svg></div>
+        <h3>Commercial Indoor Mapping</h3>
+        <p>Use an <b>existing commercial</b> indoor mapping service.</p>
+      </div>
+      <div class="card alt">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-gamepad"/></svg></div>
+        <h3>Game Engine</h3>
+        <p>Build the map in a <b>game engine</b> such as <b>Unity</b>.</p>
+      </div>
+      <div class="card alt">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-pencil"/></svg></div>
+        <h3>Redrawn 2D Plans</h3>
+        <p>Simply <b>redraw the 2D floor plans</b>.</p>
+      </div>
+    </div>
+    <div class="strip">
+      <div class="label">Chosen</div>
+      <div class="term keep">three.js</div>
+      <div class="term keep">Vite</div>
+      <div class="term">Static site · free tier</div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
   <div class="foot-tab right">03</div>
 </section>
 
-<!-- 04 · Step 2: future situation -->
-<section class="slide" aria-label="Step 2: future situation">
-  <div class="kicker">Step 2 · Future Situation</div>
-  <h2 class="h">Future <span class="accent">Situation</span></h2>
+<!-- 04 · Systems description: the system -->
+<section class="slide" aria-label="Systems description: the system">
+  <div class="kicker">2.0 · Systems Description</div>
+  <h2 class="h">System <span class="accent">Description</span></h2>
   <div class="body">
-    <p class="lead">FSKTMap moves the faculty from <b>static floor plans</b> to <b>interactive, accessible navigation</b>.</p>
-    <div class="row">
-      <div class="card">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-box"/></svg></div>
-        <h3>Interactive 3D Visualization</h3>
-        <p>Multi-floor <b>3D layouts</b> showing <b>landmarks, offices &amp; rooms</b> across faculty blocks.</p>
+    <p class="lead">A <b>web &amp; mobile</b> navigation system for <b>Blocks A &amp; B</b>, levels 1–3.</p>
+    <div class="sys">
+      <div class="lines">
+        <div class="line"><span class="k">Coverage</span><span class="v">Block A &amp; B · Levels 1–3</span></div>
+        <div class="line"><span class="k">Built with</span><span class="v">three.js + Vite</span></div>
+        <div class="line"><span class="k">Hosting</span><span class="v">Static site · free tier</span></div>
+        <div class="line"><span class="k">Users</span><span class="v">Students · Visitors · OKU</span></div>
+        <div class="line"><span class="k">Room data</span><span class="v">One file, no code changes</span></div>
       </div>
-      <div class="card neon">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-route"/></svg></div>
-        <h3>Smart Routing Engine</h3>
-        <p>Personalized <b>point-to-point navigation</b>, with <b>accessible routing</b> for OKU users.</p>
-      </div>
-      <div class="card">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-phone"/></svg></div>
-        <h3>Enhanced User Experience</h3>
-        <p><b>Dynamic ETA</b> and clear <b>visual pathfinding</b>, on <b>mobile &amp; web</b>.</p>
+      <div class="parts">
+        <div class="card part">
+          <div class="icon"><svg aria-hidden="true"><use href="#i-box"/></svg></div>
+          <div><h3>3D Visualisation</h3><p>Multi-floor layouts: <b>landmarks, offices, rooms</b>.</p></div>
+        </div>
+        <div class="card part neon">
+          <div class="icon"><svg aria-hidden="true"><use href="#i-route"/></svg></div>
+          <div><h3>Smart Routing</h3><p>Point-to-point, <b>accessible for OKU users</b>.</p></div>
+        </div>
+        <div class="card part">
+          <div class="icon"><svg aria-hidden="true"><use href="#i-phone"/></svg></div>
+          <div><h3>Enhanced UX</h3><p><b>Dynamic ETA</b> &amp; visual pathfinding.</p></div>
+        </div>
       </div>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 3</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
   <div class="foot-tab right">04</div>
 </section>
 
-<!-- 05 · Step 3: schedule -->
-<section class="slide" aria-label="Step 3: project schedule">
-  <div class="kicker">Step 3 · Project Plan</div>
+<!-- 05 · Feasibility at a glance -->
+<section class="slide" aria-label="Feasibility assessment at a glance">
+  <div class="kicker">3.0 · Feasibility</div>
+  <h2 class="h">Feasibility <span class="accent">Assessment</span></h2>
+  <div class="body">
+    <div class="grid3">
+      <div class="card">
+        <span class="tag">Economic</span>
+        <p class="stat">RM 10</p>
+        <p>Total budget. Tools &amp; hosting run on <b>free tiers</b>.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Technical</span>
+        <p class="stat">4 risks</p>
+        <p>Biggest: model <b>traced from schematics</b>, not survey data.</p>
+      </div>
+      <div class="card neon">
+        <span class="tag">Operational</span>
+        <p class="stat">2 problems</p>
+        <p>Hard-to-find rooms and <b>no accessible route</b> for OKU users.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Legal &amp; Contractual</span>
+        <p class="stat">Limited</p>
+        <p>Needs <b>permission to publish</b> plans. <b>No personal data</b>.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Political</span>
+        <p class="stat">Buy-in</p>
+        <p>Consult <b>faculty management</b> &amp; plan owners; hear <b>student reps</b>.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Schedule</span>
+        <p class="stat">Wk 5–9</p>
+        <p><b>4 phases</b>, with iterative sprints in Weeks 7–8.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">05</div>
+</section>
+
+<!-- 06 · Technical analysis -->
+<section class="slide" aria-label="Technical analysis: risk factors">
+  <div class="kicker">3.0 · Technical</div>
+  <h2 class="h">Technical <span class="accent">Risks</span></h2>
+  <div class="body">
+    <p class="lead"><b>Four risk factors</b>, led by how the 3D model is made.</p>
+    <div class="grid2">
+      <div class="card risk dark">
+        <span class="num">01</span>
+        <div><span class="tag">Most significant</span><h3>Approximate Geometry</h3><p>Traced from <b>schematic drawings</b>, not survey data: <b>curved walls, door widths</b> and some <b>labels</b> are approximate.</p></div>
+      </div>
+      <div class="card risk neon">
+        <span class="num">02</span>
+        <div><h3>Incorrect Routes</h3><p>Wrong geometry can give <b>wrong routes</b>, especially <b>stair-avoidance routes</b> for OKU users.</p></div>
+      </div>
+      <div class="card risk">
+        <span class="num">03</span>
+        <div><h3>Slow 3D Performance</h3><p>The 3D view may lag on <b>low-end phones</b>.</p></div>
+      </div>
+      <div class="card risk">
+        <span class="num">04</span>
+        <div><h3>Messy Source Drawings</h3><p>Some rooms are <b>unnamed</b> or <b>labelled twice</b> on the original drawings.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">06</div>
+</section>
+
+<!-- 07 · Operational analysis -->
+<section class="slide" aria-label="Operational analysis: problems solved">
+  <div class="kicker">3.0 · Operational</div>
+  <h2 class="h">Problems <span class="accent">Solved</span></h2>
+  <div class="body" style="gap: 36px">
+    <div class="pairs">
+      <div class="pair">
+        <div class="card">
+          <span class="tag">Problem 1</span>
+          <h3>Hard-to-Find Rooms</h3>
+          <p><b>Static plans &amp; signage</b> confuse newcomers; <b>MM5</b> and <b>BK1</b> are hard to find.</p>
+        </div>
+        <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+        <div class="card">
+          <span class="tag done">Solved by FSKTMap</span>
+          <h3>Interactive 3D Map</h3>
+          <p>Multi-floor 3D layouts with <b>landmarks, offices &amp; rooms</b>.</p>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="card">
+          <span class="tag">Problem 2</span>
+          <h3>No Accessible Route</h3>
+          <p><b>OKU users</b> have no accessible route through the building.</p>
+        </div>
+        <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+        <div class="card neon">
+          <span class="tag">Solved by FSKTMap</span>
+          <h3>Stair-Avoiding Routes</h3>
+          <p><b>Accessible routing</b> that keeps OKU users <b>off the stairs</b>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="strip">
+      <div class="label">Easy to maintain</div>
+      <div class="term"><svg class="ico" aria-hidden="true"><use href="#i-file"/></svg>Change a room by editing one data file</div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">07</div>
+</section>
+
+<!-- 08 · Legal & political analysis -->
+<section class="slide" aria-label="Legal, contractual and political analysis">
+  <div class="kicker">3.0 · Legal &amp; Political</div>
+  <h2 class="h">Legal &amp; <span class="accent">Political</span></h2>
+  <div class="body">
+    <div class="row lp">
+      <div class="card">
+        <div class="top"><div class="icon"><svg aria-hidden="true"><use href="#i-shield"/></svg></div><span class="tag">Legal &amp; Contractual</span></div>
+        <h3>Limited Legal Issues</h3>
+        <ul class="items big">
+          <li><span>The floor plans belong to the faculty, so <b>permission to publish</b> them is needed.</span></li>
+          <li><span>The system collects <b>no personal data</b>.</span></li>
+        </ul>
+      </div>
+      <div class="card neon">
+        <div class="top"><div class="icon"><svg aria-hidden="true"><use href="#i-users"/></svg></div><span class="tag">Political</span></div>
+        <h3>Stakeholder Buy-In</h3>
+        <div class="stake">
+          <div>Faculty management<span>Consult</span></div>
+          <div>Floor-plan administrators<span>Consult</span></div>
+          <div>Student representatives<span>Feedback</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">08</div>
+</section>
+
+<!-- 09 · Schedule, timeline & resource analysis -->
+<section class="slide" aria-label="Feasibility: schedule and timeline">
+  <div class="kicker">3.0 · Schedule</div>
   <h2 class="h">Project <span class="accent">Schedule</span></h2>
   <div class="body">
     <p class="lead">Four phases across <b>Weeks 5–9</b>, with <b>iterative sprints</b> during execution.</p>
@@ -462,14 +650,14 @@
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 3</div>
-  <div class="foot-tab right">05</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">09</div>
 </section>
 
-<!-- 06 · Step 3: roles -->
-<section class="slide" aria-label="Step 3: project roles">
-  <div class="kicker">Step 3 · Project Plan</div>
-  <h2 class="h">Project <span class="accent">Roles</span></h2>
+<!-- 10 · Management: team configuration -->
+<section class="slide" aria-label="Management: team configuration">
+  <div class="kicker">4.0 · Management</div>
+  <h2 class="h">Team <span class="accent">Configuration</span></h2>
   <div class="body">
     <div class="roles">
       <div class="card role neon"><img src="assets/portraits/member-5.jpg" alt="Yong Jun Onn"><div class="info"><h3>Project Manager</h3><p>Yong Jun Onn</p></div></div>
@@ -480,33 +668,46 @@
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 3</div>
-  <div class="foot-tab right">06</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">10</div>
 </section>
 
-<!-- 07 · Step 3: budget -->
-<section class="slide" aria-label="Step 3: project budget">
-  <div class="kicker">Step 3 · Project Plan</div>
-  <h2 class="h">Project <span class="accent">Budget</span></h2>
+<!-- 11 · Management: communication & standards -->
+<section class="slide" aria-label="Management: communication plan and project standards">
+  <div class="kicker">4.0 · Management</div>
+  <h2 class="h">Plans &amp; <span class="accent">Standards</span></h2>
   <div class="body">
-    <p class="lead">FSKTMap runs almost entirely on <b>free-tier</b> tools and hosting.</p>
-    <div class="budget">
-      <div class="lines">
-        <div class="line head"><span>Cost category</span><span>Unit cost (RM)</span></div>
-        <div class="line"><span class="cat">Software &amp; Tools</span><span class="cost free">Free tier</span></div>
-        <div class="line"><span class="cat">Hosting &amp; Deployment</span><span class="cost free">Free tier</span></div>
-        <div class="line"><span class="cat">Documentation &amp; Contingency</span><span class="cost">RM 10</span></div>
+    <p class="lead">Changes are <b>agreed by stakeholders</b>, <b>reviewed weekly</b> and <b>tracked in Git</b>.</p>
+    <div class="row">
+      <div class="card">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-chat"/></svg></div>
+        <span class="tag">Communication plan</span>
+        <h3>Communication Matrix</h3>
+        <p>So <b>all stakeholders</b> evaluate and <b>accept changes</b>.</p>
       </div>
-      <div class="card total neon">
-        <span class="tag">Total budget</span>
-        <p class="mega">RM 10</p>
-        <p>Everything else runs on <b>free tiers</b>.</p>
+      <div class="card">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-users"/></svg></div>
+        <span class="tag">Standards</span>
+        <h3>Weekly Steering Committee</h3>
+        <p>Decides <b>how the project is evaluated</b>, then evaluates it.</p>
+      </div>
+      <div class="card neon">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-loop"/></svg></div>
+        <span class="tag">Procedures</span>
+        <h3>Iterative Sprints</h3>
+        <p>Execution with <b>continuous algorithm testing</b>.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-git"/></svg></div>
+        <span class="tag">Procedures</span>
+        <h3>Git Repository</h3>
+        <p><b>Every change</b> is recorded in the project's repo.</p>
       </div>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 3</div>
-  <div class="foot-tab right">07</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">11</div>
 </section>
 
 <script>
@@ -516,7 +717,7 @@
   let cur = -1, timer;
   // tag the pieces that animate in; --i staggers them in reading order
   [['.kicker, .h, .lead, .op, .arrow, .week, .hero .badge, .hero .title, .hero .tagline, .hero .tab', 'rise'],
-   ['.row > .card, .steps > .card, .gantt > .card, .roles > .card, .strip > *:not(.op), .lines, .total, .hero .member', 'press'],
+   ['.row > .card, .grid2 > .card, .grid3 > .card, .gantt > .card, .roles > .card, .pair > .card, .parts > .card, .strip > *:not(.op), .lines, .verdict, .hero .member', 'press'],
    ['.hero .rule', 'draw']].forEach(([sel, fx]) => document.querySelectorAll(sel).forEach(el => { el.dataset.fx = fx; }));
   slides.forEach(s => s.querySelectorAll('[data-fx]').forEach((el, k) => el.style.setProperty('--i', Math.min(k, 14))));
   const fit = () => document.documentElement.style.setProperty('--s', Math.min(innerWidth / 1920, innerHeight / 1080));
