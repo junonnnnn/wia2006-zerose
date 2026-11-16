@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FSKTMap · Progress 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Montserrat:wght@700;800&display=swap">
+<style>
+  :root {
+    --ink: #000000;
+    --ink-2: #111827;
+    --ink-3: #1F2937;
+    --body: #374151;
+    --grey: #6B7280;
+    --green: #16A34A;
+    --neon: #00FF00;
+    --paper: #FFFFFF;
+    --ph-fill: #E5E7EB;
+    --display: 'Inter', 'Arial Black', Arial, sans-serif;
+    --label: 'Montserrat', 'Arial Black', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: #2A2A2A; overflow: hidden; }
+
+  /* 1920×1080 canvas, one slide at a time, scaled to fit the window */
+  .slide {
+    position: absolute; left: 50%; top: 50%;
+    width: 1920px; height: 1080px;
+    transform: translate(-50%, -50%) scale(var(--s, 1));
+    background: var(--paper); color: var(--ink);
+    font-family: var(--display);
+    overflow: hidden;
+    display: none; flex-direction: column;
+    padding: 72px 96px 140px;
+  }
+  .slide.active { display: flex; }
+
+  /* ---------- header ---------- */
+  .kicker {
+    align-self: flex-start; height: 64px; display: flex; align-items: center;
+    padding: 0 22px 0 26px; background: var(--ink); color: var(--paper);
+    font-family: var(--label); font-weight: 800; font-size: 28px; letter-spacing: 0.12em;
+    text-transform: uppercase; white-space: nowrap; box-shadow: 6px 6px 0 var(--neon);
+  }
+  .h {
+    margin-top: 44px; font-weight: 900; font-size: 112px; line-height: 0.95;
+    letter-spacing: -0.035em; text-transform: uppercase; white-space: nowrap;
+  }
+  .h .accent { color: var(--green); text-shadow: 6px 6px 0 var(--ink); }
+  .body { flex: 1; display: flex; flex-direction: column; gap: 44px; margin-top: 52px; min-height: 0; }
+
+  /* ---------- shared pieces ---------- */
+  b { font-weight: 800; color: var(--ink); }
+  .lead {
+    border-left: 12px solid var(--ink); padding: 4px 0 4px 30px; max-width: 1640px;
+    font-size: 42px; font-weight: 600; line-height: 1.25; letter-spacing: -0.02em; color: var(--ink-2);
+  }
+  .lead b { font-weight: 900; }
+  .row { display: flex; gap: 36px; }
+  .row > * { flex: 1; min-width: 0; }
+  .card {
+    background: var(--paper); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink);
+    padding: 32px 36px; display: flex; flex-direction: column; gap: 16px;
+  }
+  .card.neon { box-shadow: 8px 8px 0 var(--neon); }
+  .card h3 { font-weight: 900; font-size: 38px; line-height: 1.05; letter-spacing: -0.02em; text-transform: uppercase; }
+  .card p { font-size: 30px; line-height: 1.38; font-weight: 500; color: var(--body); }
+  .tag {
+    align-self: flex-start; background: var(--ink); color: var(--paper);
+    font-family: var(--label); font-weight: 800; font-size: 20px; letter-spacing: 0.12em;
+    padding: 10px 12px 10px 14px; text-transform: uppercase; white-space: nowrap;
+  }
+  .neon .tag { background: var(--green); }
+  .icon { width: 84px; height: 84px; flex: none; background: var(--ink); display: grid; place-items: center; }
+  .icon svg { width: 46px; height: 46px; }
+  .neon .icon { background: var(--green); }
+  .card .code {
+    font-weight: 900; font-size: 84px; line-height: 0.9; letter-spacing: -0.04em; white-space: nowrap;
+    color: var(--green); text-shadow: 5px 5px 0 var(--ink); margin-bottom: 8px;
+  }
+  .num {
+    font-weight: 900; font-size: 96px; line-height: 0.85; letter-spacing: -0.05em;
+    color: var(--green); text-shadow: 5px 5px 0 var(--ink);
+  }
+  .arrow { display: grid; place-items: center; }
+  .arrow svg { width: 56px; height: 56px; }
+
+  /* a labelled strip of boxes: [LABEL] [term] [term] … */
+  .strip { display: flex; align-items: stretch; gap: 16px; }
+  .strip .label {
+    flex: none; display: flex; align-items: center; padding: 0 26px;
+    background: var(--ink); color: var(--paper); box-shadow: 6px 6px 0 var(--neon);
+    font-family: var(--label); font-weight: 800; font-size: 22px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
+  }
+  .term {
+    flex: 1 1 auto; display: flex; align-items: center; padding: 22px 24px;
+    border: 4px solid var(--ink); background: var(--paper);
+    font-weight: 900; font-size: 28px; line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; white-space: nowrap;
+  }
+  .term.neon { box-shadow: 6px 6px 0 var(--neon); }
+  .op { align-self: center; font-weight: 900; font-size: 64px; line-height: 1; }
+  .formula .term.result { flex: 1.5; }
+  .term.result { background: var(--ink); color: var(--paper); box-shadow: 8px 8px 0 var(--neon); font-size: 34px; }
+  .verdict {
+    display: flex; align-items: center; gap: 28px; padding: 28px 36px;
+    background: var(--green); color: var(--paper); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink);
+    font-size: 40px; font-weight: 600; line-height: 1.25; letter-spacing: -0.015em;
+  }
+  .verdict b { color: var(--paper); font-weight: 900; }
+  .verdict svg { width: 56px; height: 56px; flex: none; }
+
+  .chips { display: flex; flex-direction: column; gap: 14px; }
+  .chip {
+    display: flex; align-items: center; gap: 18px; padding: 12px 18px; border: 3px solid var(--ink);
+    font-weight: 800; font-size: 28px; line-height: 1.2; letter-spacing: -0.015em;
+  }
+  .chip::before { content: ""; width: 18px; height: 18px; flex: none; background: var(--green); border: 3px solid var(--ink); }
+
+  .icon { color: var(--paper); }
+  .tag.status { display: inline-flex; align-items: center; gap: 10px; }
+  .tag.status svg { width: 20px; height: 20px; }
+  .tag.done { background: var(--green); }
+  .tags { display: flex; gap: 12px; }
+
+  .term.keep { text-transform: none; }
+  .card.alt { border-style: dashed; box-shadow: none; }
+  .card.dark { background: var(--ink); color: var(--paper); }
+  .card.dark p { color: #D1D5DB; }
+  .card.dark b { color: var(--paper); }
+  .card.dark .tag { background: var(--neon); color: var(--ink); }
+  .items.big li { font-size: 30px; font-weight: 600; }
+  .items.big li::before { margin-top: 12px; }
+
+  /* ---------- 04 · system description ---------- */
+  .sys { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: start; }
+  .sys .line { padding: 22px 28px; }
+  .line .k {
+    font-family: var(--label); font-weight: 800; font-size: 20px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--grey); white-space: nowrap;
+  }
+  .line .v { font-weight: 800; font-size: 30px; line-height: 1.2; letter-spacing: -0.015em; text-align: right; }
+  .parts { display: flex; flex-direction: column; gap: 24px; }
+  .part { flex-direction: row; align-items: center; gap: 26px; padding: 22px 26px; }
+  .part .icon { width: 72px; height: 72px; }
+  .part .icon svg { width: 40px; height: 40px; }
+  .part > div { display: flex; flex-direction: column; gap: 6px; }
+  .part h3 { font-size: 32px; }
+  .card.part p { font-size: 26px; }
+
+  /* ---------- 05 · feasibility at a glance ---------- */
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px 36px; }
+  .grid3 .card { gap: 10px; padding: 28px 32px; }
+  .card .stat {
+    margin: 2px 0 4px; font-weight: 900; font-size: 72px; line-height: 0.95; letter-spacing: -0.04em; white-space: nowrap;
+    color: var(--green); text-shadow: 5px 5px 0 var(--ink);
+  }
+  .grid3 .card p:not(.stat) { font-size: 26px; }
+
+  /* ---------- 06 · technical risks ---------- */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 40px; }
+  .risk { flex-direction: row; align-items: flex-start; gap: 28px; padding: 30px 34px; }
+  .risk .num { flex: none; width: 118px; }
+  .risk > div { display: flex; flex-direction: column; gap: 10px; }
+  .risk h3 { font-size: 36px; }
+  .card.risk p { font-size: 27px; }
+
+  /* ---------- 07 · problem → solution ---------- */
+  .pairs { display: flex; flex-direction: column; gap: 24px; }
+  .pair { display: grid; grid-template-columns: 1fr 72px 1fr; }
+  .pair .card { gap: 8px; padding: 22px 30px; }
+  .pair .card p { font-size: 27px; }
+  .pair h3 { font-size: 34px; }
+  .strip .term .ico { width: 36px; height: 36px; flex: none; margin-right: 18px; }
+
+  /* ---------- 08 · legal & political ---------- */
+  .lp .card { gap: 18px; }
+  .lp .top { display: flex; align-items: center; gap: 22px; }
+  .lp h3 { font-size: 40px; }
+  .stake { display: flex; flex-direction: column; gap: 14px; }
+  .stake div {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 20px;
+    border: 3px solid var(--ink); font-weight: 800; font-size: 28px; letter-spacing: -0.015em;
+  }
+  .stake span { font-family: var(--label); font-weight: 800; font-size: 18px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); white-space: nowrap; }
+
+  /* ---------- spec lines ---------- */
+  .lines { display: flex; flex-direction: column; background: var(--paper); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
+  .line { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 32px; border-top: 4px solid var(--ink); }
+
+  /* ---------- 09 · schedule ---------- */
+  .gantt { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px 24px; align-items: stretch; }
+  .week {
+    padding: 12px 0; text-align: center; background: var(--ink); color: var(--paper);
+    font-family: var(--label); font-weight: 800; font-size: 22px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .phase { padding: 26px 26px 30px; gap: 14px; }
+  .phase h3 { font-size: 36px; }
+  .items { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .items li { display: flex; gap: 12px; font-size: 24px; font-weight: 600; line-height: 1.3; color: var(--body); }
+  .items li::before { content: ""; width: 14px; height: 14px; flex: none; margin-top: 9px; background: var(--green); border: 3px solid var(--ink); }
+  .phase.wide .items { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 28px; }
+
+  /* ---------- 10 · team ---------- */
+  .roles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px; }
+  .role { padding: 0; gap: 0; overflow: hidden; }
+  .role img { display: block; width: 100%; aspect-ratio: 106 / 109; object-fit: cover; border-bottom: 4px solid var(--ink); background: var(--ph-fill); }
+  .role .info { display: flex; flex-direction: column; gap: 10px; padding: 22px 24px 26px; }
+  .role h3 { font-size: 30px; }
+  .card.role p { font-size: 26px; font-weight: 700; }
+
+  /* ---------- 01 · hero ---------- */
+  .hero .badges { position: absolute; left: 60px; top: 137px; display: flex; gap: 32px; }
+  .hero .badge {
+    height: 80px; display: flex; align-items: center; gap: 18px;
+    font-family: var(--label); font-weight: 800; font-size: 40px;
+    letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
+  }
+  .hero .badge--team { background: var(--ink); color: var(--paper); padding: 0 26px 0 32px; box-shadow: 6px 6px 0 var(--neon); }
+  .hero .badge--team svg { width: 44px; height: 44px; flex: none; }
+  .hero .badge--course { background: var(--paper); color: var(--ink-3); border: 4px solid var(--ink); padding: 0 26px 0 29px; font-weight: 700; font-size: 34px; letter-spacing: 0.1em; }
+  .hero .badge--week { background: var(--green); color: var(--paper); border: 4px solid var(--ink); padding: 0 26px; font-size: 34px; box-shadow: 6px 6px 0 var(--ink); }
+  .hero .title {
+    position: absolute; left: 50px; top: 291px;
+    font-weight: 900; font-size: 330px; line-height: 0.83; letter-spacing: -0.03em; white-space: nowrap;
+  }
+  .hero .title .accent { color: var(--green); text-shadow: 6px 6px 0 var(--ink); }
+  .hero .tagline { position: absolute; left: 47px; top: 636px; border-left: 12px solid var(--ink); padding: 6px 0 6px 33px; }
+  .hero .tagline .line1 { font-weight: 800; font-size: 68px; line-height: 1.08; letter-spacing: -0.04em; color: var(--ink-2); }
+  .hero .tagline .line2 { font-weight: 700; font-size: 54px; line-height: 1.12; letter-spacing: -0.01em; color: var(--grey); }
+  .hero .rule { position: absolute; left: 32px; right: 40px; top: 836px; height: 8px; background: var(--ink); }
+  .hero .tab {
+    position: absolute; top: 823px; height: 40px; padding: 0 18px 0 20px;
+    display: flex; align-items: center; background: var(--ink); color: var(--paper);
+    font-family: var(--label); font-weight: 800; font-size: 22px; letter-spacing: 0.12em;
+  }
+  .hero .tab--team { left: 50px; }
+  .hero .tab--leader { left: 1550px; }
+  .hero .members { position: absolute; left: 32px; top: 873px; display: flex; gap: 28px; }
+  .hero .member { width: 346px; height: 117px; display: flex; background: var(--paper); border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+  .hero .member--leader { box-shadow: 6px 6px 0 var(--neon); }
+  .hero .portrait { position: relative; width: 106px; flex: none; border-right: 4px solid var(--ink); background: var(--ph-fill); overflow: hidden; }
+  .hero .portrait svg, .hero .portrait img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero .portrait img { object-fit: cover; }
+  .hero .name {
+    flex: 1; display: flex; align-items: center; padding: 0 16px 0 18px;
+    font-weight: 900; font-size: 25px; line-height: 1.25; letter-spacing: -0.03em; text-transform: uppercase;
+  }
+
+  /* ---------- footer ---------- */
+  .foot-rule { position: absolute; left: 32px; right: 40px; top: 1000px; height: 8px; background: var(--ink); }
+  .foot-tab {
+    position: absolute; top: 987px; height: 40px; padding: 0 18px 0 20px; display: flex; align-items: center;
+    background: var(--ink); color: var(--paper);
+    font-family: var(--label); font-weight: 800; font-size: 22px; letter-spacing: 0.12em;
+  }
+  .foot-tab.left { left: 50px; }
+  .foot-tab.right { right: 58px; }
+
+  /* ---------- transitions ---------- */
+  /* the new slide wipes in behind a neon + black edge; the old one slides off and dims */
+  .slide.active { z-index: 2; }
+  .slide.leaving { display: flex; z-index: 1; }
+  .slide.enter-next, .slide.enter-prev { animation: 560ms cubic-bezier(.85, 0, .15, 1) backwards; }
+  .slide.exit-next, .slide.exit-prev { animation: 560ms cubic-bezier(.85, 0, .15, 1) forwards; }
+  .slide.enter-next { animation-name: wipe-in-next; box-shadow: -14px 0 0 var(--neon), -28px 0 0 var(--ink); }
+  .slide.enter-prev { animation-name: wipe-in-prev; box-shadow: 14px 0 0 var(--neon), 28px 0 0 var(--ink); }
+  .slide.exit-next { animation-name: wipe-out-next; }
+  .slide.exit-prev { animation-name: wipe-out-prev; }
+  @keyframes wipe-in-next { from { translate: 100vw 0; } }
+  @keyframes wipe-in-prev { from { translate: -100vw 0; } }
+  @keyframes wipe-out-next { to { translate: -30vw 0; opacity: 0.35; } }
+  @keyframes wipe-out-prev { to { translate: 30vw 0; opacity: 0.35; } }
+
+  /* content: text rises; boxes land pressed flat, then pop up onto their hard shadow */
+  .animate [data-fx] { animation: 520ms cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(240ms + var(--i, 0) * 60ms); }
+  .animate [data-fx="rise"] { animation-name: fx-rise; }
+  .animate [data-fx="press"] { animation-name: fx-press; animation-duration: 640ms; }
+  .animate [data-fx="draw"] { animation-name: fx-draw; transform-origin: left; }
+  @keyframes fx-rise { from { opacity: 0; translate: 0 36px; } }
+  @keyframes fx-press { 0% { opacity: 0; translate: 0 48px; box-shadow: none; } 55% { opacity: 1; translate: 8px 8px; box-shadow: none; } }
+  @keyframes fx-draw { from { scale: 0 1; } }
+  @media (prefers-reduced-motion: reduce) { .slide, .slide * { animation: none !important; } }
+
+  @page { size: 1920px 1080px; margin: 0; }
+  @media print {
+    html, body { height: auto; overflow: visible; background: var(--paper); }
+    .slide { display: flex; position: relative; left: 0; top: 0; transform: none; break-after: page; }
+    .slide, .slide * { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- shared icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M3 21v-5h5"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5 9.5 18 20 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></g></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></g></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/></g></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></g></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></g></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></g></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></g></symbol>
+    <symbol id="i-gamepad" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01"/><path d="M17.3 5H6.7a4 4 0 0 0-4 3.6C2.6 9.4 2 14.5 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.4-1.4A2 2 0 0 1 9.8 16h4.4a2 2 0 0 1 1.4.6L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.5-.6-6.6-.7-7.3a4 4 0 0 0-4-3.7z"/></g></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 6.8a1 1 0 0 0-4-4L3.8 16.2a2 2 0 0 0-.5.8L2 21.4a.5.5 0 0 0 .6.6l4.4-1.3a2 2 0 0 0 .8-.5z"/><path d="m15 5 4 4"/></g></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></g></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></g></symbol>
+    <symbol id="i-git" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></g></symbol>
+  </defs>
+</svg>
+
+<!-- 01 · Hero -->
+<section class="slide hero" aria-label="FSKTMap progress 4 title slide">
+  <div class="badges">
+    <div class="badge badge--team">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Team Zero SE
+    </div>
+    <div class="badge badge--course">WIA2006 · System Analysis &amp; Design</div>
+    <div class="badge badge--week">Progress 4</div>
+  </div>
+
+  <h1 class="title">FSKT<span class="accent">MAP</span></h1>
+
+  <div class="tagline">
+    <p class="line1">BASELINE PROJECT PLAN</p>
+    <p class="line2">OVERVIEW · SYSTEM · FEASIBILITY · MANAGEMENT.</p>
+  </div>
+
+  <div class="rule"></div>
+  <div class="tab tab--team">THE TEAM</div>
+  <div class="tab tab--leader">GROUP LEADER</div>
+
+  <!-- Portraits: 318×327 headshot crops in assets/portraits/ (originals in assets/). A missing file falls back to the silhouette. -->
+  <div class="members">
+    <div class="member">
+      <div class="portrait"><svg viewBox="0 0 106 109" aria-hidden="true"><circle cx="53" cy="42" r="19" fill="#9CA3AF"/><path d="M15 109c0-24 17-38 38-38s38 14 38 38z" fill="#9CA3AF"/></svg><img src="assets/portraits/member-1.jpg" alt="Low Guan Hoong" onerror="this.remove()"></div>
+      <div class="name">Low Guan Hoong</div>
+    </div>
+    <div class="member">
+      <div class="portrait"><svg viewBox="0 0 106 109" aria-hidden="true"><circle cx="53" cy="42" r="19" fill="#9CA3AF"/><path d="M15 109c0-24 17-38 38-38s38 14 38 38z" fill="#9CA3AF"/></svg><img src="assets/portraits/member-2.jpg" alt="Looi Yu Zhi" onerror="this.remove()"></div>
+      <div class="name">Looi Yu Zhi</div>
+    </div>
+    <div class="member">
+      <div class="portrait"><svg viewBox="0 0 106 109" aria-hidden="true"><circle cx="53" cy="42" r="19" fill="#9CA3AF"/><path d="M15 109c0-24 17-38 38-38s38 14 38 38z" fill="#9CA3AF"/></svg><img src="assets/portraits/member-3.jpg" alt="Ng Jing Xun" onerror="this.remove()"></div>
+      <div class="name">Ng Jing Xun</div>
+    </div>
+    <div class="member">
+      <div class="portrait"><svg viewBox="0 0 106 109" aria-hidden="true"><circle cx="53" cy="42" r="19" fill="#9CA3AF"/><path d="M15 109c0-24 17-38 38-38s38 14 38 38z" fill="#9CA3AF"/></svg><img src="assets/portraits/member-4.jpg" alt="Tai Yun Yi" onerror="this.remove()"></div>
+      <div class="name">Tai Yun Yi</div>
+    </div>
+    <div class="member member--leader">
+      <div class="portrait"><svg viewBox="0 0 106 109" aria-hidden="true"><circle cx="53" cy="42" r="19" fill="#9CA3AF"/><path d="M15 109c0-24 17-38 38-38s38 14 38 38z" fill="#9CA3AF"/></svg><img src="assets/portraits/member-5.jpg" alt="Yong Jun Onn" onerror="this.remove()"></div>
+      <div class="name">Yong Jun Onn</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · Introduction: overview & recommendation -->
+<section class="slide" aria-label="Introduction: project overview and recommendation">
+  <div class="kicker">1.0 · Introduction</div>
+  <h2 class="h">Project <span class="accent">Overview</span></h2>
+  <div class="body">
+    <p class="lead"><b>Static floor plans</b> &amp; <b>physical signage</b> confuse <b>new students &amp; visitors</b>.</p>
+    <div class="row">
+      <div class="card">
+        <p class="code">MM5</p>
+        <h3>Obscure Location</h3>
+        <p>The room is <b>hard to find</b>.</p>
+      </div>
+      <div class="card">
+        <p class="code">BK1</p>
+        <h3>Unclear Labelling</h3>
+        <p>Room labels are <b>unclear</b>.</p>
+      </div>
+      <div class="card neon">
+        <p class="code">OKU</p>
+        <h3>Missing Access</h3>
+        <p>No <b>accessibility infrastructure</b> for OKU users.</p>
+      </div>
+    </div>
+    <div class="verdict">
+      <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+      <p><b>Recommendation:</b> finish a <b>full analysis &amp; design</b> before publishing, so <b>room data matches the official drawings</b>.</p>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">02</div>
+</section>
+
+<!-- 03 · Systems description: alternatives -->
+<section class="slide" aria-label="Systems description: alternatives">
+  <div class="kicker">2.0 · Systems Description</div>
+  <h2 class="h">The <span class="accent">Alternatives</span></h2>
+  <div class="body">
+    <p class="lead">Other approaches were <b>possible</b>; FSKTMap is built as a <b>custom 3D web app</b>.</p>
+    <div class="row">
+      <div class="card alt">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-building"/></svg></div>
+        <h3>Commercial Indoor Mapping</h3>
+        <p>Use an <b>existing commercial</b> indoor mapping service.</p>
+      </div>
+      <div class="card alt">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-gamepad"/></svg></div>
+        <h3>Game Engine</h3>
+        <p>Build the map in a <b>game engine</b> such as <b>Unity</b>.</p>
+      </div>
+      <div class="card alt">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-pencil"/></svg></div>
+        <h3>Redrawn 2D Plans</h3>
+        <p>Simply <b>redraw the 2D floor plans</b>.</p>
+      </div>
+    </div>
+    <div class="strip">
+      <div class="label">Chosen</div>
+      <div class="term keep">three.js</div>
+      <div class="term keep">Vite</div>
+      <div class="term">Static site · free tier</div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">03</div>
+</section>
+
+<!-- 04 · Systems description: the system -->
+<section class="slide" aria-label="Systems description: the system">
+  <div class="kicker">2.0 · Systems Description</div>
+  <h2 class="h">System <span class="accent">Description</span></h2>
+  <div class="body">
+    <p class="lead">A <b>web &amp; mobile</b> navigation system for <b>Blocks A &amp; B</b>, levels 1–3.</p>
+    <div class="sys">
+      <div class="lines">
+        <div class="line"><span class="k">Coverage</span><span class="v">Block A &amp; B · Levels 1–3</span></div>
+        <div class="line"><span class="k">Built with</span><span class="v">three.js + Vite</span></div>
+        <div class="line"><span class="k">Hosting</span><span class="v">Static site · free tier</span></div>
+        <div class="line"><span class="k">Users</span><span class="v">Students · Visitors · OKU</span></div>
+        <div class="line"><span class="k">Room data</span><span class="v">One file, no code changes</span></div>
+      </div>
+      <div class="parts">
+        <div class="card part">
+          <div class="icon"><svg aria-hidden="true"><use href="#i-box"/></svg></div>
+          <div><h3>3D Visualisation</h3><p>Multi-floor layouts: <b>landmarks, offices, rooms</b>.</p></div>
+        </div>
+        <div class="card part neon">
+          <div class="icon"><svg aria-hidden="true"><use href="#i-route"/></svg></div>
+          <div><h3>Smart Routing</h3><p>Point-to-point, <b>accessible for OKU users</b>.</p></div>
+        </div>
+        <div class="card part">
+          <div class="icon"><svg aria-hidden="true"><use href="#i-phone"/></svg></div>
+          <div><h3>Enhanced UX</h3><p><b>Dynamic ETA</b> &amp; visual pathfinding.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">04</div>
+</section>
+
+<!-- 05 · Feasibility at a glance -->
+<section class="slide" aria-label="Feasibility assessment at a glance">
+  <div class="kicker">3.0 · Feasibility</div>
+  <h2 class="h">Feasibility <span class="accent">Assessment</span></h2>
+  <div class="body">
+    <div class="grid3">
+      <div class="card">
+        <span class="tag">Economic</span>
+        <p class="stat">RM 10</p>
+        <p>Total budget. Tools &amp; hosting run on <b>free tiers</b>.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Technical</span>
+        <p class="stat">4 risks</p>
+        <p>Biggest: model <b>traced from schematics</b>, not survey data.</p>
+      </div>
+      <div class="card neon">
+        <span class="tag">Operational</span>
+        <p class="stat">2 problems</p>
+        <p>Hard-to-find rooms and <b>no accessible route</b> for OKU users.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Legal &amp; Contractual</span>
+        <p class="stat">Limited</p>
+        <p>Needs <b>permission to publish</b> plans. <b>No personal data</b>.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Political</span>
+        <p class="stat">Buy-in</p>
+        <p>Consult <b>faculty management</b> &amp; plan owners; hear <b>student reps</b>.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Schedule</span>
+        <p class="stat">Wk 5–9</p>
+        <p><b>4 phases</b>, with iterative sprints in Weeks 7–8.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">05</div>
+</section>
+
+<!-- 06 · Technical analysis -->
+<section class="slide" aria-label="Technical analysis: risk factors">
+  <div class="kicker">3.0 · Technical</div>
+  <h2 class="h">Technical <span class="accent">Risks</span></h2>
+  <div class="body">
+    <p class="lead"><b>Four risk factors</b>, led by how the 3D model is made.</p>
+    <div class="grid2">
+      <div class="card risk dark">
+        <span class="num">01</span>
+        <div><span class="tag">Most significant</span><h3>Approximate Geometry</h3><p>Traced from <b>schematic drawings</b>, not survey data: <b>curved walls, door widths</b> and some <b>labels</b> are approximate.</p></div>
+      </div>
+      <div class="card risk neon">
+        <span class="num">02</span>
+        <div><h3>Incorrect Routes</h3><p>Wrong geometry can give <b>wrong routes</b>, especially <b>stair-avoidance routes</b> for OKU users.</p></div>
+      </div>
+      <div class="card risk">
+        <span class="num">03</span>
+        <div><h3>Slow 3D Performance</h3><p>The 3D view may lag on <b>low-end phones</b>.</p></div>
+      </div>
+      <div class="card risk">
+        <span class="num">04</span>
+        <div><h3>Messy Source Drawings</h3><p>Some rooms are <b>unnamed</b> or <b>labelled twice</b> on the original drawings.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">06</div>
+</section>
+
+<!-- 07 · Operational analysis -->
+<section class="slide" aria-label="Operational analysis: problems solved">
+  <div class="kicker">3.0 · Operational</div>
+  <h2 class="h">Problems <span class="accent">Solved</span></h2>
+  <div class="body" style="gap: 36px">
+    <div class="pairs">
+      <div class="pair">
+        <div class="card">
+          <span class="tag">Problem 1</span>
+          <h3>Hard-to-Find Rooms</h3>
+          <p><b>Static plans &amp; signage</b> confuse newcomers; <b>MM5</b> and <b>BK1</b> are hard to find.</p>
+        </div>
+        <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+        <div class="card">
+          <span class="tag done">Solved by FSKTMap</span>
+          <h3>Interactive 3D Map</h3>
+          <p>Multi-floor 3D layouts with <b>landmarks, offices &amp; rooms</b>.</p>
+        </div>
+      </div>
+      <div class="pair">
+        <div class="card">
+          <span class="tag">Problem 2</span>
+          <h3>No Accessible Route</h3>
+          <p><b>OKU users</b> have no accessible route through the building.</p>
+        </div>
+        <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+        <div class="card neon">
+          <span class="tag">Solved by FSKTMap</span>
+          <h3>Stair-Avoiding Routes</h3>
+          <p><b>Accessible routing</b> that keeps OKU users <b>off the stairs</b>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="strip">
+      <div class="label">Easy to maintain</div>
+      <div class="term"><svg class="ico" aria-hidden="true"><use href="#i-file"/></svg>Change a room by editing one data file</div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">07</div>
+</section>
+
+<!-- 08 · Legal & political analysis -->
+<section class="slide" aria-label="Legal, contractual and political analysis">
+  <div class="kicker">3.0 · Legal &amp; Political</div>
+  <h2 class="h">Legal &amp; <span class="accent">Political</span></h2>
+  <div class="body">
+    <div class="row lp">
+      <div class="card">
+        <div class="top"><div class="icon"><svg aria-hidden="true"><use href="#i-shield"/></svg></div><span class="tag">Legal &amp; Contractual</span></div>
+        <h3>Limited Legal Issues</h3>
+        <ul class="items big">
+          <li><span>The floor plans belong to the faculty, so <b>permission to publish</b> them is needed.</span></li>
+          <li><span>The system collects <b>no personal data</b>.</span></li>
+        </ul>
+      </div>
+      <div class="card neon">
+        <div class="top"><div class="icon"><svg aria-hidden="true"><use href="#i-users"/></svg></div><span class="tag">Political</span></div>
+        <h3>Stakeholder Buy-In</h3>
+        <div class="stake">
+          <div>Faculty management<span>Consult</span></div>
+          <div>Floor-plan administrators<span>Consult</span></div>
+          <div>Student representatives<span>Feedback</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">08</div>
+</section>
+
+<!-- 09 · Schedule, timeline & resource analysis -->
+<section class="slide" aria-label="Feasibility: schedule and timeline">
+  <div class="kicker">3.0 · Schedule</div>
+  <h2 class="h">Project <span class="accent">Schedule</span></h2>
+  <div class="body">
+    <p class="lead">Four phases across <b>Weeks 5–9</b>, with <b>iterative sprints</b> during execution.</p>
+    <div class="gantt">
+      <div class="week">Week 5</div>
+      <div class="week">Week 6</div>
+      <div class="week">Week 7</div>
+      <div class="week">Week 8</div>
+      <div class="week">Week 9</div>
+      <div class="card phase">
+        <span class="tag">Phase 1</span>
+        <h3>Defining</h3>
+        <ul class="items"><li>Project charter</li><li>Select project manager</li><li>Root-cause analysis</li><li>Scope &amp; user requirements</li></ul>
+      </div>
+      <div class="card phase">
+        <span class="tag">Phase 2</span>
+        <h3>Planning</h3>
+        <ul class="items"><li>Context diagram</li><li>Data flow diagrams</li><li>Use case diagrams</li><li>UI/UX wireframes</li><li>Technical architecture</li></ul>
+      </div>
+      <div class="card phase wide neon" style="grid-column: span 2">
+        <div class="tags"><span class="tag">Phase 3</span><span class="tag status"><svg aria-hidden="true"><use href="#i-loop"/></svg>Iterative sprints</span></div>
+        <h3>Executing</h3>
+        <ul class="items"><li>3D map environment</li><li>Point-to-point navigation engine</li><li>OKU stair-avoidance routing</li><li>Continuous algorithm testing</li></ul>
+      </div>
+      <div class="card phase">
+        <span class="tag">Phase 4</span>
+        <h3>Closing</h3>
+        <ul class="items"><li>Usability evaluation</li><li>Final system report</li><li>Demo &amp; academic handover</li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">09</div>
+</section>
+
+<!-- 10 · Management: team configuration -->
+<section class="slide" aria-label="Management: team configuration">
+  <div class="kicker">4.0 · Management</div>
+  <h2 class="h">Team <span class="accent">Configuration</span></h2>
+  <div class="body">
+    <div class="roles">
+      <div class="card role neon"><img src="assets/portraits/member-5.jpg" alt="Yong Jun Onn"><div class="info"><h3>Project Manager</h3><p>Yong Jun Onn</p></div></div>
+      <div class="card role"><img src="assets/portraits/member-3.jpg" alt="Ng Jing Xun"><div class="info"><h3>System Analyst</h3><p>Ng Jing Xun</p></div></div>
+      <div class="card role"><img src="assets/portraits/member-2.jpg" alt="Looi Yu Zhi"><div class="info"><h3>Lead Software Developer</h3><p>Looi Yu Zhi</p></div></div>
+      <div class="card role"><img src="assets/portraits/member-4.jpg" alt="Tai Yun Yi"><div class="info"><h3>QA &amp; Test Engineer</h3><p>Tai Yun Yi</p></div></div>
+      <div class="card role"><img src="assets/portraits/member-1.jpg" alt="Low Guan Hoong"><div class="info"><h3>Network Engineer</h3><p>Low Guan Hoong</p></div></div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">10</div>
+</section>
+
+<!-- 11 · Management: communication & standards -->
+<section class="slide" aria-label="Management: communication plan and project standards">
+  <div class="kicker">4.0 · Management</div>
+  <h2 class="h">Plans &amp; <span class="accent">Standards</span></h2>
+  <div class="body">
+    <p class="lead">Changes are <b>agreed by stakeholders</b>, <b>reviewed weekly</b> and <b>tracked in Git</b>.</p>
+    <div class="row">
+      <div class="card">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-chat"/></svg></div>
+        <span class="tag">Communication plan</span>
+        <h3>Communication Matrix</h3>
+        <p>So <b>all stakeholders</b> evaluate and <b>accept changes</b>.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-users"/></svg></div>
+        <span class="tag">Standards</span>
+        <h3>Weekly Steering Committee</h3>
+        <p>Decides <b>how the project is evaluated</b>, then evaluates it.</p>
+      </div>
+      <div class="card neon">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-loop"/></svg></div>
+        <span class="tag">Procedures</span>
+        <h3>Iterative Sprints</h3>
+        <p>Execution with <b>continuous algorithm testing</b>.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg aria-hidden="true"><use href="#i-git"/></svg></div>
+        <span class="tag">Procedures</span>
+        <h3>Git Repository</h3>
+        <p><b>Every change</b> is recorded in the project's repo.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot-rule"></div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab right">11</div>
+</section>
+
+<script>
+  // ← / → (or click left/right half) to move, F for fullscreen, #N in the URL opens slide N
+  const slides = [...document.querySelectorAll('.slide')];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur = -1, timer;
+  // tag the pieces that animate in; --i staggers them in reading order
+  [['.kicker, .h, .lead, .op, .arrow, .week, .hero .badge, .hero .title, .hero .tagline, .hero .tab', 'rise'],
+   ['.row > .card, .grid2 > .card, .grid3 > .card, .gantt > .card, .roles > .card, .pair > .card, .parts > .card, .strip > *:not(.op), .lines, .verdict, .hero .member', 'press'],
+   ['.hero .rule', 'draw']].forEach(([sel, fx]) => document.querySelectorAll(sel).forEach(el => { el.dataset.fx = fx; }));
+  slides.forEach(s => s.querySelectorAll('[data-fx]').forEach((el, k) => el.style.setProperty('--i', Math.min(k, 14))));
+  const fit = () => document.documentElement.style.setProperty('--s', Math.min(innerWidth / 1920, innerHeight / 1080));
+  const show = n => {
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    if (n === cur) return;
+    const prev = slides[cur], next = slides[n], dir = n > cur ? 'next' : 'prev';
+    clearTimeout(timer);
+    slides.forEach(s => s.classList.remove('active', 'leaving', 'animate', 'enter-next', 'enter-prev', 'exit-next', 'exit-prev'));
+    void next.offsetWidth; // restart animations on a slide we have shown before
+    next.classList.add('active');
+    if (!reduce) {
+      next.classList.add('animate');
+      if (prev) {
+        prev.classList.add('leaving', 'exit-' + dir);
+        next.classList.add('enter-' + dir);
+        timer = setTimeout(() => { prev.classList.remove('leaving', 'exit-' + dir); next.classList.remove('enter-' + dir); }, 600);
+      }
+    }
+    cur = n;
+    try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) {}
+  };
+  const fromHash = () => { const n = parseInt(location.hash.slice(1), 10); show(Number.isFinite(n) ? n - 1 : 0); };
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { show(cur + 1); e.preventDefault(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { show(cur - 1); e.preventDefault(); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key === 'f' || e.key === 'F') document.documentElement.requestFullscreen?.();
+  });
+  // respond on press, not release
+  addEventListener('pointerdown', e => { if (e.button === 0) show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)); });
+  addEventListener('hashchange', fromHash);
+  addEventListener('resize', fit);
+  fit(); fromHash();
+</script>
+</body>
+</html>
