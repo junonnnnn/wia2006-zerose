@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FSKTMap · Progress 4</title>
+<title>FSKTMap · Progress 5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Montserrat:wght@700;800&display=swap">
@@ -125,91 +125,77 @@
   .tag.done { background: var(--green); }
   .tags { display: flex; gap: 12px; }
 
-  .term.keep { text-transform: none; }
-  .card.alt { border-style: dashed; box-shadow: none; }
-  .card.dark { background: var(--ink); color: var(--paper); }
-  .card.dark p { color: #D1D5DB; }
-  .card.dark b { color: var(--paper); }
-  .card.dark .tag { background: var(--neon); color: var(--ink); }
-  .items.big li { font-size: 30px; font-weight: 600; }
-  .items.big li::before { margin-top: 12px; }
-
-  /* ---------- 04 · system description ---------- */
-  .sys { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: start; }
-  .sys .line { padding: 22px 28px; }
-  .line .k {
-    font-family: var(--label); font-weight: 800; font-size: 20px; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--grey); white-space: nowrap;
-  }
-  .line .v { font-weight: 800; font-size: 30px; line-height: 1.2; letter-spacing: -0.015em; text-align: right; }
-  .parts { display: flex; flex-direction: column; gap: 24px; }
-  .part { flex-direction: row; align-items: center; gap: 26px; padding: 22px 26px; }
-  .part .icon { width: 72px; height: 72px; }
-  .part .icon svg { width: 40px; height: 40px; }
-  .part > div { display: flex; flex-direction: column; gap: 6px; }
-  .part h3 { font-size: 32px; }
-  .card.part p { font-size: 26px; }
-
-  /* ---------- 05 · feasibility at a glance ---------- */
-  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px 36px; }
-  .grid3 .card { gap: 10px; padding: 28px 32px; }
+  .top { display: flex; align-items: center; justify-content: space-between; }
   .card .stat {
-    margin: 2px 0 4px; font-weight: 900; font-size: 72px; line-height: 0.95; letter-spacing: -0.04em; white-space: nowrap;
+    font-weight: 900; font-size: 64px; line-height: 0.95; letter-spacing: -0.04em; white-space: nowrap;
     color: var(--green); text-shadow: 5px 5px 0 var(--ink);
   }
-  .grid3 .card p:not(.stat) { font-size: 26px; }
 
-  /* ---------- 06 · technical risks ---------- */
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 40px; }
-  .risk { flex-direction: row; align-items: flex-start; gap: 28px; padding: 30px 34px; }
-  .risk .num { flex: none; width: 118px; }
-  .risk > div { display: flex; flex-direction: column; gap: 10px; }
-  .risk h3 { font-size: 36px; }
-  .card.risk p { font-size: 27px; }
-
-  /* ---------- 07 · problem → solution ---------- */
-  .pairs { display: flex; flex-direction: column; gap: 24px; }
-  .pair { display: grid; grid-template-columns: 1fr 72px 1fr; }
-  .pair .card { gap: 8px; padding: 22px 30px; }
-  .pair .card p { font-size: 27px; }
-  .pair h3 { font-size: 34px; }
-  .strip .term .ico { width: 36px; height: 36px; flex: none; margin-right: 18px; }
-
-  /* ---------- 08 · legal & political ---------- */
-  .lp .card { gap: 18px; }
-  .lp .top { display: flex; align-items: center; gap: 22px; }
-  .lp h3 { font-size: 40px; }
-  .stake { display: flex; flex-direction: column; gap: 14px; }
-  .stake div {
-    display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 20px;
-    border: 3px solid var(--ink); font-weight: 800; font-size: 28px; letter-spacing: -0.015em;
+  /* ---------- people (who runs each method) ---------- */
+  .people { display: flex; flex-wrap: wrap; gap: 14px 26px; }
+  .person { display: flex; align-items: center; gap: 12px; }
+  .person img { width: 52px; height: 52px; flex: none; border: 3px solid var(--ink); object-fit: cover; background: var(--ph-fill); }
+  .person b { display: block; font-weight: 800; font-size: 24px; line-height: 1.15; letter-spacing: -0.01em; white-space: nowrap; }
+  .person small {
+    display: block; margin-top: 3px; font-family: var(--label); font-weight: 800; font-size: 15px;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); white-space: nowrap;
   }
-  .stake span { font-family: var(--label); font-weight: 800; font-size: 18px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); white-space: nowrap; }
 
-  /* ---------- spec lines ---------- */
-  .lines { display: flex; flex-direction: column; background: var(--paper); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
-  .line { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 32px; border-top: 4px solid var(--ink); }
+  /* ---------- 02 · overview ---------- */
+  .method { gap: 14px; }
+  .method h3 { font-size: 44px; }
+  .method .people { margin-top: auto; padding-top: 18px; border-top: 3px solid var(--ink); }
 
-  /* ---------- 09 · schedule ---------- */
-  .gantt { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px 24px; align-items: stretch; }
-  .week {
-    padding: 12px 0; text-align: center; background: var(--ink); color: var(--paper);
-    font-family: var(--label); font-weight: 800; font-size: 22px; letter-spacing: 0.12em; text-transform: uppercase;
-  }
-  .phase { padding: 26px 26px 30px; gap: 14px; }
-  .phase h3 { font-size: 36px; }
-  .items { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .items li { display: flex; gap: 12px; font-size: 24px; font-weight: 600; line-height: 1.3; color: var(--body); }
-  .items li::before { content: ""; width: 14px; height: 14px; flex: none; margin-top: 9px; background: var(--green); border: 3px solid var(--ink); }
-  .phase.wide .items { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 28px; }
+  /* ---------- method slides: target + led-by band, then 3 steps ---------- */
+  .meta { display: grid; grid-template-columns: 1fr auto; gap: 32px; }
+  .meta .box { display: flex; align-items: center; gap: 24px; padding: 18px 26px; background: var(--paper); border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+  .meta .box > p { font-weight: 800; font-size: 28px; line-height: 1.25; letter-spacing: -0.015em; color: var(--ink-2); }
+  .steps { display: grid; grid-template-columns: 1fr 72px 1fr 72px 1fr; }
+  .steps .card { gap: 12px; }
+  .steps h3 { font-size: 40px; }
 
-  /* ---------- 10 · team ---------- */
-  .roles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px; }
-  .role { padding: 0; gap: 0; overflow: hidden; }
-  .role img { display: block; width: 100%; aspect-ratio: 106 / 109; object-fit: cover; border-bottom: 4px solid var(--ink); background: var(--ph-fill); }
-  .role .info { display: flex; flex-direction: column; gap: 10px; padding: 22px 24px 26px; }
-  .role h3 { font-size: 30px; }
-  .card.role p { font-size: 26px; font-weight: 700; }
+  /* ---------- 04 · interview questions ---------- */
+  .qs { display: flex; flex-direction: column; gap: 16px; }
+  .q { display: flex; align-items: stretch; min-height: 96px; background: var(--paper); border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+  .q.neon { box-shadow: 6px 6px 0 var(--neon); }
+  .q .qid { width: 100px; flex: none; display: grid; place-items: center; background: var(--ink); color: var(--paper); font-weight: 900; font-size: 36px; letter-spacing: -0.02em; }
+  .q.neon .qid { background: var(--green); }
+  .q h3 { width: 400px; flex: none; align-self: center; padding: 0 28px; font-weight: 900; font-size: 30px; line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; }
+  .q p { flex: 1; align-self: center; padding: 14px 30px 14px 0; font-size: 26px; font-weight: 500; line-height: 1.3; color: var(--body); }
+
+  /* ---------- 06 · questionnaire form ---------- */
+  .form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 36px; }
+  .field { display: flex; flex-direction: column; gap: 12px; padding: 16px 22px 18px; background: var(--paper); border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+  .field.neon { box-shadow: 6px 6px 0 var(--neon); }
+  .field.wide { grid-column: span 2; }
+  .qline { display: flex; align-items: center; gap: 16px; }
+  .qn { flex: none; padding: 6px 10px; background: var(--ink); color: var(--paper); font-family: var(--label); font-weight: 800; font-size: 20px; letter-spacing: 0.12em; }
+  .neon .qn { background: var(--green); }
+  .qt { font-weight: 800; font-size: 27px; line-height: 1.2; letter-spacing: -0.015em; }
+  .qt small { font-weight: 600; font-size: 22px; color: var(--grey); letter-spacing: 0; }
+  .opts { display: flex; flex-wrap: wrap; gap: 10px; }
+  .opts span { display: inline-flex; align-items: center; gap: 9px; padding: 5px 12px; border: 2px solid var(--ink); font-weight: 700; font-size: 21px; white-space: nowrap; }
+  .opts span::before { content: ""; width: 13px; height: 13px; flex: none; border: 2px solid var(--ink); border-radius: 50%; }
+  .opts.multi span::before { border-radius: 0; }
+  .opts.scale span::before { display: none; }
+  .opts.scale span b { margin-left: 4px; padding: 0 6px; background: var(--ink); color: var(--paper); font-size: 17px; }
+  .opts.open span { flex: 1; border-style: dashed; color: var(--grey); font-weight: 600; font-style: italic; }
+  .opts.open span::before { display: none; }
+
+  /* ---------- 08 · audit checklist ---------- */
+  .checks { display: flex; flex-direction: column; gap: 14px; }
+  .check { display: grid; grid-template-columns: 90px 380px 1fr 230px; min-height: 92px; background: var(--paper); border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+  .check.neon { box-shadow: 6px 6px 0 var(--neon); }
+  .check .cid { display: grid; place-items: center; background: var(--ink); color: var(--paper); font-weight: 900; font-size: 34px; }
+  .check.neon .cid { background: var(--green); }
+  .check h3 { align-self: center; padding: 0 24px; font-weight: 900; font-size: 27px; line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; }
+  .check p { align-self: center; padding: 12px 26px 12px 0; font-size: 25px; font-weight: 500; line-height: 1.3; color: var(--body); }
+  .check .status { display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 0 22px; border-left: 4px solid var(--ink); }
+  .check .status span { display: flex; align-items: center; gap: 10px; font-family: var(--label); font-weight: 800; font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .check .status span::before { content: ""; width: 20px; height: 20px; flex: none; border: 3px solid var(--ink); }
+  .check.head { min-height: 0; box-shadow: none; background: var(--ink); color: var(--paper); }
+  .check.head span { padding: 12px 24px; font-family: var(--label); font-weight: 800; font-size: 18px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .check.head span:last-child { border-left: 4px solid var(--paper); padding-left: 22px; }
 
   /* ---------- 01 · hero ---------- */
   .hero .badges { position: absolute; left: 60px; top: 137px; display: flex; gap: 32px; }
@@ -316,25 +302,31 @@
     <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></g></symbol>
     <symbol id="i-chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></g></symbol>
     <symbol id="i-git" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></g></symbol>
+    <symbol id="i-clipboard" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></g></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></g></symbol>
+    <symbol id="i-present" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3M7 21l5-5 5 5"/></g></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></g></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></g></symbol>
+    <symbol id="i-database" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></g></symbol>
   </defs>
 </svg>
 
 <!-- 01 · Hero -->
-<section class="slide hero" aria-label="FSKTMap progress 4 title slide">
+<section class="slide hero" aria-label="FSKTMap progress 5 title slide">
   <div class="badges">
     <div class="badge badge--team">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       Team Zero SE
     </div>
     <div class="badge badge--course">WIA2006 · System Analysis &amp; Design</div>
-    <div class="badge badge--week">Progress 4</div>
+    <div class="badge badge--week">Progress 5</div>
   </div>
 
   <h1 class="title">FSKT<span class="accent">MAP</span></h1>
 
   <div class="tagline">
-    <p class="line1">BASELINE PROJECT PLAN</p>
-    <p class="line2">OVERVIEW · SYSTEM · FEASIBILITY · MANAGEMENT.</p>
+    <p class="line1">DATA GATHERING METHODS</p>
+    <p class="line2">INTERVIEW · QUESTIONNAIRE · OBSERVATION.</p>
   </div>
 
   <div class="rule"></div>
@@ -366,348 +358,243 @@
   </div>
 </section>
 
-<!-- 02 · Introduction: overview & recommendation -->
-<section class="slide" aria-label="Introduction: project overview and recommendation">
-  <div class="kicker">1.0 · Introduction</div>
-  <h2 class="h">Project <span class="accent">Overview</span></h2>
+<!-- 02 · Overview: three methods -->
+<section class="slide" aria-label="Overview: three data gathering methods">
+  <div class="kicker">Data Gathering · Overview</div>
+  <h2 class="h">Three <span class="accent">Methods</span></h2>
   <div class="body">
-    <p class="lead"><b>Static floor plans</b> &amp; <b>physical signage</b> confuse <b>new students &amp; visitors</b>.</p>
+    <p class="lead">Three <b>complementary</b> methods to gather accurate <b>user &amp; system requirements</b>.</p>
     <div class="row">
-      <div class="card">
-        <p class="code">MM5</p>
-        <h3>Obscure Location</h3>
-        <p>The room is <b>hard to find</b>.</p>
+      <div class="card method">
+        <div class="top"><span class="num">01</span><div class="icon"><svg aria-hidden="true"><use href="#i-chat"/></svg></div></div>
+        <h3>Interview</h3>
+        <p class="stat">4 people</p>
+        <p><b>Admin/facility staff</b> &amp; <b>OKU students</b>, 20 minutes each.</p>
+        <div class="people">
+          <div class="person"><img src="assets/portraits/member-3.jpg" alt=""><b>Ng Jing Xun</b></div>
+          <div class="person"><img src="assets/portraits/member-5.jpg" alt=""><b>Yong Jun Onn</b></div>
+        </div>
       </div>
-      <div class="card">
-        <p class="code">BK1</p>
-        <h3>Unclear Labelling</h3>
-        <p>Room labels are <b>unclear</b>.</p>
+      <div class="card method">
+        <div class="top"><span class="num">02</span><div class="icon"><svg aria-hidden="true"><use href="#i-clipboard"/></svg></div></div>
+        <h3>Questionnaire</h3>
+        <p class="stat">40+ replies</p>
+        <p><b>Students</b> (esp. Year 1), <b>academic staff</b> &amp; <b>visitors</b>.</p>
+        <div class="people">
+          <div class="person"><img src="assets/portraits/member-3.jpg" alt=""><b>Ng Jing Xun</b></div>
+          <div class="person"><img src="assets/portraits/member-2.jpg" alt=""><b>Looi Yu Zhi</b></div>
+        </div>
       </div>
-      <div class="card neon">
-        <p class="code">OKU</p>
-        <h3>Missing Access</h3>
-        <p>No <b>accessibility infrastructure</b> for OKU users.</p>
+      <div class="card method neon">
+        <div class="top"><span class="num">03</span><div class="icon"><svg aria-hidden="true"><use href="#i-eye"/></svg></div></div>
+        <h3>Observation</h3>
+        <p class="stat">6 floors</p>
+        <p><b>Blocks A &amp; B</b>, levels 1–3: corridors, signage, lifts &amp; wayfinding.</p>
+        <div class="people">
+          <div class="person"><img src="assets/portraits/member-4.jpg" alt=""><b>Tai Yun Yi</b></div>
+          <div class="person"><img src="assets/portraits/member-1.jpg" alt=""><b>Low Guan Hoong</b></div>
+        </div>
       </div>
-    </div>
-    <div class="verdict">
-      <svg aria-hidden="true"><use href="#i-arrow"/></svg>
-      <p><b>Recommendation:</b> finish a <b>full analysis &amp; design</b> before publishing, so <b>room data matches the official drawings</b>.</p>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 5</div>
   <div class="foot-tab right">02</div>
 </section>
 
-<!-- 03 · Systems description: alternatives -->
-<section class="slide" aria-label="Systems description: alternatives">
-  <div class="kicker">2.0 · Systems Description</div>
-  <h2 class="h">The <span class="accent">Alternatives</span></h2>
+<!-- 03 · Method 1: interview procedure -->
+<section class="slide" aria-label="Method 1: interview procedure">
+  <div class="kicker">Method 1 · Interview</div>
+  <h2 class="h">The <span class="accent">Interview</span></h2>
   <div class="body">
-    <p class="lead">Other approaches were <b>possible</b>; FSKTMap is built as a <b>custom 3D web app</b>.</p>
-    <div class="row">
-      <div class="card alt">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-building"/></svg></div>
-        <h3>Commercial Indoor Mapping</h3>
-        <p>Use an <b>existing commercial</b> indoor mapping service.</p>
-      </div>
-      <div class="card alt">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-gamepad"/></svg></div>
-        <h3>Game Engine</h3>
-        <p>Build the map in a <b>game engine</b> such as <b>Unity</b>.</p>
-      </div>
-      <div class="card alt">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-pencil"/></svg></div>
-        <h3>Redrawn 2D Plans</h3>
-        <p>Simply <b>redraw the 2D floor plans</b>.</p>
+    <div class="meta">
+      <div class="box"><span class="tag">Target</span><p>2 admin/facility staff · 2 OKU students</p></div>
+      <div class="box"><span class="tag">Led by</span>
+        <div class="people">
+          <div class="person"><img src="assets/portraits/member-3.jpg" alt=""><div><b>Ng Jing Xun</b><small>System Analyst</small></div></div>
+          <div class="person"><img src="assets/portraits/member-5.jpg" alt=""><div><b>Yong Jun Onn</b><small>Project Manager</small></div></div>
+        </div>
       </div>
     </div>
-    <div class="strip">
-      <div class="label">Chosen</div>
-      <div class="term keep">three.js</div>
-      <div class="term keep">Vite</div>
-      <div class="term">Static site · free tier</div>
+    <div class="steps">
+      <div class="card">
+        <div class="top"><span class="num">01</span><div class="icon"><svg aria-hidden="true"><use href="#i-calendar"/></svg></div></div>
+        <h3>Prepare</h3>
+        <p>Schedule <b>20-minute semi-structured</b> interviews and share a <b>project overview</b> beforehand.</p>
+      </div>
+      <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+      <div class="card">
+        <div class="top"><span class="num">02</span><div class="icon"><svg aria-hidden="true"><use href="#i-present"/></svg></div></div>
+        <h3>Execute</h3>
+        <p>Present the concept with <b>sketches</b>: <b>3D map, routing &amp; OKU stair-avoidance</b>. Then ask the questions.</p>
+      </div>
+      <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+      <div class="card neon">
+        <div class="top"><span class="num">03</span><div class="icon"><svg aria-hidden="true"><use href="#i-file"/></svg></div></div>
+        <h3>Document</h3>
+        <p>Summarize <b>room labels</b>, <b>approval needs</b> &amp; <b>step-free rules</b> into specs and the <b>room dataset</b>.</p>
+      </div>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 5</div>
   <div class="foot-tab right">03</div>
 </section>
 
-<!-- 04 · Systems description: the system -->
-<section class="slide" aria-label="Systems description: the system">
-  <div class="kicker">2.0 · Systems Description</div>
-  <h2 class="h">System <span class="accent">Description</span></h2>
+<!-- 04 · Method 1: interview questions -->
+<section class="slide" aria-label="Method 1: interview questions">
+  <div class="kicker">Method 1 · Interview</div>
+  <h2 class="h">Interview <span class="accent">Questions</span></h2>
   <div class="body">
-    <p class="lead">A <b>web &amp; mobile</b> navigation system for <b>Blocks A &amp; B</b>, levels 1–3.</p>
-    <div class="sys">
-      <div class="lines">
-        <div class="line"><span class="k">Coverage</span><span class="v">Block A &amp; B · Levels 1–3</span></div>
-        <div class="line"><span class="k">Built with</span><span class="v">three.js + Vite</span></div>
-        <div class="line"><span class="k">Hosting</span><span class="v">Static site · free tier</span></div>
-        <div class="line"><span class="k">Users</span><span class="v">Students · Visitors · OKU</span></div>
-        <div class="line"><span class="k">Room data</span><span class="v">One file, no code changes</span></div>
-      </div>
-      <div class="parts">
-        <div class="card part">
-          <div class="icon"><svg aria-hidden="true"><use href="#i-box"/></svg></div>
-          <div><h3>3D Visualisation</h3><p>Multi-floor layouts: <b>landmarks, offices, rooms</b>.</p></div>
-        </div>
-        <div class="card part neon">
-          <div class="icon"><svg aria-hidden="true"><use href="#i-route"/></svg></div>
-          <div><h3>Smart Routing</h3><p>Point-to-point, <b>accessible for OKU users</b>.</p></div>
-        </div>
-        <div class="card part">
-          <div class="icon"><svg aria-hidden="true"><use href="#i-phone"/></svg></div>
-          <div><h3>Enhanced UX</h3><p><b>Dynamic ETA</b> &amp; visual pathfinding.</p></div>
-        </div>
-      </div>
+    <div class="qs">
+      <div class="q"><span class="qid">Q1</span><h3>Floor Plan Accuracy</h3><p>Do the <b>schematics</b> for Blocks A &amp; B (L1–3) reflect all <b>room names</b> and <b>recent renovations</b>?</p></div>
+      <div class="q"><span class="qid">Q2</span><h3>Room Labelling</h3><p>Which venues get the <b>most directional inquiries</b> (MM5, BK1, MM1), and what are the <b>official names</b> of unnamed or duplicate rooms?</p></div>
+      <div class="q"><span class="qid">Q3</span><h3>Permission &amp; Governance</h3><p>What <b>permission or disclaimer</b> is needed before <b>publishing 3D floor plans</b>?</p></div>
+      <div class="q neon"><span class="qid">Q4</span><h3>OKU Accessibility</h3><p>Which <b>lifts, ramps &amp; corridors</b> are most reliable for wheelchairs, and are any doors <b>locked after hours</b>?</p></div>
+      <div class="q"><span class="qid">Q5</span><h3>ETA &amp; Detours</h3><p>How much extra <b>walking or lift waiting time</b> should the ETA add for <b>stair-free routes</b>?</p></div>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 5</div>
   <div class="foot-tab right">04</div>
 </section>
 
-<!-- 05 · Feasibility at a glance -->
-<section class="slide" aria-label="Feasibility assessment at a glance">
-  <div class="kicker">3.0 · Feasibility</div>
-  <h2 class="h">Feasibility <span class="accent">Assessment</span></h2>
+<!-- 05 · Method 2: questionnaire procedure -->
+<section class="slide" aria-label="Method 2: questionnaire procedure">
+  <div class="kicker">Method 2 · Questionnaire</div>
+  <h2 class="h">The <span class="accent">Questionnaire</span></h2>
   <div class="body">
-    <div class="grid3">
-      <div class="card">
-        <span class="tag">Economic</span>
-        <p class="stat">RM 10</p>
-        <p>Total budget. Tools &amp; hosting run on <b>free tiers</b>.</p>
+    <div class="meta">
+      <div class="box"><span class="tag">Target</span><p>Students (esp. Year 1) · Academic staff · Visitors</p></div>
+      <div class="box"><span class="tag">Led by</span>
+        <div class="people">
+          <div class="person"><img src="assets/portraits/member-3.jpg" alt=""><div><b>Ng Jing Xun</b><small>System Analyst</small></div></div>
+          <div class="person"><img src="assets/portraits/member-2.jpg" alt=""><div><b>Looi Yu Zhi</b><small>Lead Software Developer</small></div></div>
+        </div>
       </div>
+    </div>
+    <div class="steps">
       <div class="card">
-        <span class="tag">Technical</span>
-        <p class="stat">4 risks</p>
-        <p>Biggest: model <b>traced from schematics</b>, not survey data.</p>
+        <div class="top"><span class="num">01</span><div class="icon"><svg aria-hidden="true"><use href="#i-pencil"/></svg></div></div>
+        <h3>Design &amp; Pilot</h3>
+        <p>A <b>3-minute Google Form</b> with <b>no personal data</b>, pilot-tested with <b>3 classmates</b>.</p>
       </div>
+      <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+      <div class="card">
+        <div class="top"><span class="num">02</span><div class="icon"><svg aria-hidden="true"><use href="#i-send"/></svg></div></div>
+        <h3>Distribute</h3>
+        <p>Via <b>batch WhatsApp/Telegram</b> groups and <b>QR codes</b> in Block A &amp; B lobbies. Target: <b>40+ responses</b>.</p>
+      </div>
+      <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
       <div class="card neon">
-        <span class="tag">Operational</span>
-        <p class="stat">2 problems</p>
-        <p>Hard-to-find rooms and <b>no accessible route</b> for OKU users.</p>
-      </div>
-      <div class="card">
-        <span class="tag">Legal &amp; Contractual</span>
-        <p class="stat">Limited</p>
-        <p>Needs <b>permission to publish</b> plans. <b>No personal data</b>.</p>
-      </div>
-      <div class="card">
-        <span class="tag">Political</span>
-        <p class="stat">Buy-in</p>
-        <p>Consult <b>faculty management</b> &amp; plan owners; hear <b>student reps</b>.</p>
-      </div>
-      <div class="card">
-        <span class="tag">Schedule</span>
-        <p class="stat">Wk 5–9</p>
-        <p><b>4 phases</b>, with iterative sprints in Weeks 7–8.</p>
+        <div class="top"><span class="num">03</span><div class="icon"><svg aria-hidden="true"><use href="#i-chart"/></svg></div></div>
+        <h3>Analyze</h3>
+        <p>Compile <b>percentages &amp; average ratings</b> to prioritize requirements and <b>device preferences</b>.</p>
       </div>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 5</div>
   <div class="foot-tab right">05</div>
 </section>
 
-<!-- 06 · Technical analysis -->
-<section class="slide" aria-label="Technical analysis: risk factors">
-  <div class="kicker">3.0 · Technical</div>
-  <h2 class="h">Technical <span class="accent">Risks</span></h2>
+<!-- 06 · Method 2: questionnaire items -->
+<section class="slide" aria-label="Method 2: questionnaire items">
+  <div class="kicker">Method 2 · Questionnaire</div>
+  <h2 class="h">Questionnaire <span class="accent">Items</span></h2>
   <div class="body">
-    <p class="lead"><b>Four risk factors</b>, led by how the 3D model is made.</p>
-    <div class="grid2">
-      <div class="card risk dark">
-        <span class="num">01</span>
-        <div><span class="tag">Most significant</span><h3>Approximate Geometry</h3><p>Traced from <b>schematic drawings</b>, not survey data: <b>curved walls, door widths</b> and some <b>labels</b> are approximate.</p></div>
+    <div class="form">
+      <div class="field">
+        <div class="qline"><span class="qn">Q1</span><p class="qt">Your role at FSKTM?</p></div>
+        <div class="opts"><span>Year 1</span><span>Year 2–4</span><span>Postgrad</span><span>Staff</span><span>Visitor</span></div>
       </div>
-      <div class="card risk neon">
-        <span class="num">02</span>
-        <div><h3>Incorrect Routes</h3><p>Wrong geometry can give <b>wrong routes</b>, especially <b>stair-avoidance routes</b> for OKU users.</p></div>
+      <div class="field">
+        <div class="qline"><span class="qn">Q2</span><p class="qt">Main device on campus? <small>→ mobile optimization</small></p></div>
+        <div class="opts"><span>Android phone</span><span>iPhone</span><span>Laptop</span></div>
       </div>
-      <div class="card risk">
-        <span class="num">03</span>
-        <div><h3>Slow 3D Performance</h3><p>The 3D view may lag on <b>low-end phones</b>.</p></div>
+      <div class="field">
+        <div class="qline"><span class="qn">Q3</span><p class="qt">Ever late or confused finding a room?</p></div>
+        <div class="opts"><span>Frequently</span><span>Sometimes</span><span>Rarely</span><span>Never</span></div>
       </div>
-      <div class="card risk">
-        <span class="num">04</span>
-        <div><h3>Messy Source Drawings</h3><p>Some rooms are <b>unnamed</b> or <b>labelled twice</b> on the original drawings.</p></div>
+      <div class="field">
+        <div class="qline"><span class="qn">Q4</span><p class="qt">Hardest rooms or routes to locate?</p></div>
+        <div class="opts multi"><span>MM5</span><span>BK1</span><span>MM1</span><span>Lecturer offices</span><span>OKU lift routes</span></div>
+      </div>
+      <div class="field wide neon">
+        <div class="qline"><span class="qn">Q5</span><p class="qt">Rate each feature from 1 (not useful) to 5 (essential)</p></div>
+        <div class="opts scale"><span>3D multi-floor map<b>1–5</b></span><span>Entrance photo reference<b>1–5</b></span><span>Step-by-step text<b>1–5</b></span><span>Dynamic ETA<b>1–5</b></span><span>OKU stair-free toggle<b>1–5</b></span></div>
+      </div>
+      <div class="field">
+        <div class="qline"><span class="qn">Q6</span><p class="qt">How smoothly do heavy pages load? <small>→ 3D performance</small></p></div>
+        <div class="opts"><span>Smooth</span><span>Moderate</span><span>Slow</span></div>
+      </div>
+      <div class="field">
+        <div class="qline"><span class="qn">Q7</span><p class="qt">Other landmarks or features to include?</p></div>
+        <div class="opts open"><span>e.g. OKU restrooms, surau, water dispensers…</span></div>
       </div>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 5</div>
   <div class="foot-tab right">06</div>
 </section>
 
-<!-- 07 · Operational analysis -->
-<section class="slide" aria-label="Operational analysis: problems solved">
-  <div class="kicker">3.0 · Operational</div>
-  <h2 class="h">Problems <span class="accent">Solved</span></h2>
-  <div class="body" style="gap: 36px">
-    <div class="pairs">
-      <div class="pair">
-        <div class="card">
-          <span class="tag">Problem 1</span>
-          <h3>Hard-to-Find Rooms</h3>
-          <p><b>Static plans &amp; signage</b> confuse newcomers; <b>MM5</b> and <b>BK1</b> are hard to find.</p>
-        </div>
-        <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
-        <div class="card">
-          <span class="tag done">Solved by FSKTMap</span>
-          <h3>Interactive 3D Map</h3>
-          <p>Multi-floor 3D layouts with <b>landmarks, offices &amp; rooms</b>.</p>
-        </div>
-      </div>
-      <div class="pair">
-        <div class="card">
-          <span class="tag">Problem 2</span>
-          <h3>No Accessible Route</h3>
-          <p><b>OKU users</b> have no accessible route through the building.</p>
-        </div>
-        <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
-        <div class="card neon">
-          <span class="tag">Solved by FSKTMap</span>
-          <h3>Stair-Avoiding Routes</h3>
-          <p><b>Accessible routing</b> that keeps OKU users <b>off the stairs</b>.</p>
+<!-- 07 · Method 3: observation procedure -->
+<section class="slide" aria-label="Method 3: observation procedure">
+  <div class="kicker">Method 3 · Observation</div>
+  <h2 class="h">The <span class="accent">Observation</span></h2>
+  <div class="body">
+    <div class="meta">
+      <div class="box"><span class="tag">Scope</span><p>Blocks A &amp; B, L1–3: corridors, signage, lifts &amp; wayfinding</p></div>
+      <div class="box"><span class="tag">Led by</span>
+        <div class="people">
+          <div class="person"><img src="assets/portraits/member-4.jpg" alt=""><div><b>Tai Yun Yi</b><small>QA &amp; Test Engineer</small></div></div>
+          <div class="person"><img src="assets/portraits/member-1.jpg" alt=""><div><b>Low Guan Hoong</b><small>Network Engineer</small></div></div>
         </div>
       </div>
     </div>
-    <div class="strip">
-      <div class="label">Easy to maintain</div>
-      <div class="term"><svg class="ico" aria-hidden="true"><use href="#i-file"/></svg>Change a room by editing one data file</div>
+    <div class="steps">
+      <div class="card">
+        <div class="top"><span class="num">01</span><div class="icon"><svg aria-hidden="true"><use href="#i-users"/></svg></div></div>
+        <h3>Shadow Users</h3>
+        <p>Follow <b>3–4 first-years or visitors</b> to MM5, BK1 and a Level 3 lab; record <b>wrong turns, hesitation</b> &amp; <b>walking time</b>.</p>
+      </div>
+      <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+      <div class="card">
+        <div class="top"><span class="num">02</span><div class="icon"><svg aria-hidden="true"><use href="#i-clipboard"/></svg></div></div>
+        <h3>Audit Facilities</h3>
+        <p>Walk <b>every corridor</b> with printed plans: check <b>door plaques</b>, photograph <b>obscured entrances</b>, inspect <b>lifts &amp; ramps</b>.</p>
+      </div>
+      <div class="arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+      <div class="card neon">
+        <div class="top"><span class="num">03</span><div class="icon"><svg aria-hidden="true"><use href="#i-database"/></svg></div></div>
+        <h3>Prepare Data</h3>
+        <p>Log discrepancies to build an accurate <b>room inventory</b> and <b>step-free node map</b> before design.</p>
+      </div>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 5</div>
   <div class="foot-tab right">07</div>
 </section>
 
-<!-- 08 · Legal & political analysis -->
-<section class="slide" aria-label="Legal, contractual and political analysis">
-  <div class="kicker">3.0 · Legal &amp; Political</div>
-  <h2 class="h">Legal &amp; <span class="accent">Political</span></h2>
+<!-- 08 · Method 3: audit checklist -->
+<section class="slide" aria-label="Method 3: observation and audit checklist">
+  <div class="kicker">Method 3 · Observation</div>
+  <h2 class="h">Audit <span class="accent">Checklist</span></h2>
   <div class="body">
-    <div class="row lp">
-      <div class="card">
-        <div class="top"><div class="icon"><svg aria-hidden="true"><use href="#i-shield"/></svg></div><span class="tag">Legal &amp; Contractual</span></div>
-        <h3>Limited Legal Issues</h3>
-        <ul class="items big">
-          <li><span>The floor plans belong to the faculty, so <b>permission to publish</b> them is needed.</span></li>
-          <li><span>The system collects <b>no personal data</b>.</span></li>
-        </ul>
-      </div>
-      <div class="card neon">
-        <div class="top"><div class="icon"><svg aria-hidden="true"><use href="#i-users"/></svg></div><span class="tag">Political</span></div>
-        <h3>Stakeholder Buy-In</h3>
-        <div class="stake">
-          <div>Faculty management<span>Consult</span></div>
-          <div>Floor-plan administrators<span>Consult</span></div>
-          <div>Student representatives<span>Feedback</span></div>
-        </div>
-      </div>
+    <div class="checks">
+      <div class="check head"><span></span><span>Check item</span><span>What to observe &amp; record</span><span>Status</span></div>
+      <div class="check"><span class="cid">1</span><h3>Room Labels</h3><p>Compare <b>door plaques</b> with the <b>schematic drawings</b>.</p><div class="status"><span>Verified</span><span>Discrepancy</span></div></div>
+      <div class="check"><span class="cid">2</span><h3>Unnamed / Duplicate Rooms</h3><p>Confirm the <b>actual codes &amp; functions</b> of unnamed or double-labelled rooms.</p><div class="status"><span>Verified</span><span>Discrepancy</span></div></div>
+      <div class="check"><span class="cid">3</span><h3>Entrance Visibility &amp; Photos</h3><p>Note <b>hesitation points</b> near MM5 &amp; BK1; capture <b>doorway photos</b>.</p><div class="status"><span>Verified</span><span>Discrepancy</span></div></div>
+      <div class="check neon"><span class="cid">4</span><h3>OKU Lift &amp; Ramp Routes</h3><p>Check <b>lift access, ramp slopes &amp; door widths</b> for stair-free paths.</p><div class="status"><span>Verified</span><span>Discrepancy</span></div></div>
+      <div class="check"><span class="cid">5</span><h3>Baseline Walking Time</h3><p>Time walks from <b>main entrances</b> to key rooms for the <b>ETA formula</b>.</p><div class="status"><span>Verified</span><span>Discrepancy</span></div></div>
     </div>
   </div>
   <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
+  <div class="foot-tab left">FSKTMAP · PROGRESS 5</div>
   <div class="foot-tab right">08</div>
-</section>
-
-<!-- 09 · Schedule, timeline & resource analysis -->
-<section class="slide" aria-label="Feasibility: schedule and timeline">
-  <div class="kicker">3.0 · Schedule</div>
-  <h2 class="h">Project <span class="accent">Schedule</span></h2>
-  <div class="body">
-    <p class="lead">Four phases across <b>Weeks 5–9</b>, with <b>iterative sprints</b> during execution.</p>
-    <div class="gantt">
-      <div class="week">Week 5</div>
-      <div class="week">Week 6</div>
-      <div class="week">Week 7</div>
-      <div class="week">Week 8</div>
-      <div class="week">Week 9</div>
-      <div class="card phase">
-        <span class="tag">Phase 1</span>
-        <h3>Defining</h3>
-        <ul class="items"><li>Project charter</li><li>Select project manager</li><li>Root-cause analysis</li><li>Scope &amp; user requirements</li></ul>
-      </div>
-      <div class="card phase">
-        <span class="tag">Phase 2</span>
-        <h3>Planning</h3>
-        <ul class="items"><li>Context diagram</li><li>Data flow diagrams</li><li>Use case diagrams</li><li>UI/UX wireframes</li><li>Technical architecture</li></ul>
-      </div>
-      <div class="card phase wide neon" style="grid-column: span 2">
-        <div class="tags"><span class="tag">Phase 3</span><span class="tag status"><svg aria-hidden="true"><use href="#i-loop"/></svg>Iterative sprints</span></div>
-        <h3>Executing</h3>
-        <ul class="items"><li>3D map environment</li><li>Point-to-point navigation engine</li><li>OKU stair-avoidance routing</li><li>Continuous algorithm testing</li></ul>
-      </div>
-      <div class="card phase">
-        <span class="tag">Phase 4</span>
-        <h3>Closing</h3>
-        <ul class="items"><li>Usability evaluation</li><li>Final system report</li><li>Demo &amp; academic handover</li></ul>
-      </div>
-    </div>
-  </div>
-  <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
-  <div class="foot-tab right">09</div>
-</section>
-
-<!-- 10 · Management: team configuration -->
-<section class="slide" aria-label="Management: team configuration">
-  <div class="kicker">4.0 · Management</div>
-  <h2 class="h">Team <span class="accent">Configuration</span></h2>
-  <div class="body">
-    <div class="roles">
-      <div class="card role neon"><img src="assets/portraits/member-5.jpg" alt="Yong Jun Onn"><div class="info"><h3>Project Manager</h3><p>Yong Jun Onn</p></div></div>
-      <div class="card role"><img src="assets/portraits/member-3.jpg" alt="Ng Jing Xun"><div class="info"><h3>System Analyst</h3><p>Ng Jing Xun</p></div></div>
-      <div class="card role"><img src="assets/portraits/member-2.jpg" alt="Looi Yu Zhi"><div class="info"><h3>Lead Software Developer</h3><p>Looi Yu Zhi</p></div></div>
-      <div class="card role"><img src="assets/portraits/member-4.jpg" alt="Tai Yun Yi"><div class="info"><h3>QA &amp; Test Engineer</h3><p>Tai Yun Yi</p></div></div>
-      <div class="card role"><img src="assets/portraits/member-1.jpg" alt="Low Guan Hoong"><div class="info"><h3>Network Engineer</h3><p>Low Guan Hoong</p></div></div>
-    </div>
-  </div>
-  <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
-  <div class="foot-tab right">10</div>
-</section>
-
-<!-- 11 · Management: communication & standards -->
-<section class="slide" aria-label="Management: communication plan and project standards">
-  <div class="kicker">4.0 · Management</div>
-  <h2 class="h">Plans &amp; <span class="accent">Standards</span></h2>
-  <div class="body">
-    <p class="lead">Changes are <b>agreed by stakeholders</b>, <b>reviewed weekly</b> and <b>tracked in Git</b>.</p>
-    <div class="row">
-      <div class="card">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-chat"/></svg></div>
-        <span class="tag">Communication plan</span>
-        <h3>Communication Matrix</h3>
-        <p>So <b>all stakeholders</b> evaluate and <b>accept changes</b>.</p>
-      </div>
-      <div class="card">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-users"/></svg></div>
-        <span class="tag">Standards</span>
-        <h3>Weekly Steering Committee</h3>
-        <p>Decides <b>how the project is evaluated</b>, then evaluates it.</p>
-      </div>
-      <div class="card neon">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-loop"/></svg></div>
-        <span class="tag">Procedures</span>
-        <h3>Iterative Sprints</h3>
-        <p>Execution with <b>continuous algorithm testing</b>.</p>
-      </div>
-      <div class="card">
-        <div class="icon"><svg aria-hidden="true"><use href="#i-git"/></svg></div>
-        <span class="tag">Procedures</span>
-        <h3>Git Repository</h3>
-        <p><b>Every change</b> is recorded in the project's repo.</p>
-      </div>
-    </div>
-  </div>
-  <div class="foot-rule"></div>
-  <div class="foot-tab left">FSKTMAP · PROGRESS 4</div>
-  <div class="foot-tab right">11</div>
 </section>
 
 <script>
@@ -716,8 +603,8 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let cur = -1, timer;
   // tag the pieces that animate in; --i staggers them in reading order
-  [['.kicker, .h, .lead, .op, .arrow, .week, .hero .badge, .hero .title, .hero .tagline, .hero .tab', 'rise'],
-   ['.row > .card, .grid2 > .card, .grid3 > .card, .gantt > .card, .roles > .card, .pair > .card, .parts > .card, .strip > *:not(.op), .lines, .verdict, .hero .member', 'press'],
+  [['.kicker, .h, .lead, .op, .arrow, .hero .badge, .hero .title, .hero .tagline, .hero .tab', 'rise'],
+   ['.row > .card, .steps > .card, .meta > .box, .qs > .q, .form > .field, .checks > .check, .hero .member', 'press'],
    ['.hero .rule', 'draw']].forEach(([sel, fx]) => document.querySelectorAll(sel).forEach(el => { el.dataset.fx = fx; }));
   slides.forEach(s => s.querySelectorAll('[data-fx]').forEach((el, k) => el.style.setProperty('--i', Math.min(k, 14))));
   const fit = () => document.documentElement.style.setProperty('--s', Math.min(innerWidth / 1920, innerHeight / 1080));
